@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "GameHandler.h"
 #include "Player.hpp"
+#include <fstream>
+#include <sstream>
+#include <iterator>
+#include <string>
+#include "CharacterFactory.h"
 
 namespace machiavelli {
 	const int tcp_port{ 1080 };
@@ -9,6 +14,7 @@ namespace machiavelli {
 
 GameHandler::GameHandler()
 {
+	initCharacterCards();
 }
 
 
@@ -28,7 +34,6 @@ std::shared_ptr<Player> GameHandler::addPlayer(std::shared_ptr<Socket> socket)
 	*socket << "Welcome, " << name << ", have fun playing our game!\r\n" << machiavelli::prompt;
 	player->set_socket(socket);
 	players.push_back(player);
-	player->get_socket()->write("This should work \r\n");
 
 	if (players.size() == 2) {
 		startGame();
@@ -38,5 +43,36 @@ std::shared_ptr<Player> GameHandler::addPlayer(std::shared_ptr<Socket> socket)
 }
 
 void GameHandler::startGame() {
+	std::shared_ptr<Player> firstplayer;
+	for (std::shared_ptr<Player> player : players) {
+		if (firstplayer == nullptr) {
+			firstplayer = player;
+		}
+		else if (firstplayer->get_age() < player->get_age()) {
+			firstplayer = player;
+		}
+	}
 
+	for (std::shared_ptr<Player> player : players) {
+		player->get_socket()->write("Let's start the game, " + firstplayer->get_name() + " may start.");
+	}
+}
+
+void GameHandler::initCharacterCards() {
+	const std::string textfile{ "karakterkaarten.csv" };
+	std::ifstream input_file{ textfile }; // stack-based file object; deze constructie opent de file voor lezen
+	std::string line;
+
+	// getline() leest een regel die eindigt in een \n
+	// (je kunt ook een 3e param meegeven als je een ander 'regeleinde' wil gebruiken)
+	while (std::getline(input_file, line)) { // getline() geeft false zodra end-of-file is bereikt
+		
+		std::istringstream buf(line);
+		std::istream_iterator <std::string> beg(buf), end;
+		std::vector<std::string> line(beg, end);
+		for each(std::string s in line) {
+			std::unique_ptr<Character> c = CharacterFactory::createCharacter(s);
+			characters.emplace(c->getId(), std::move(c));
+		}
+	}
 }
