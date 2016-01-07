@@ -6,6 +6,7 @@
 #include <iterator>
 #include <string>
 #include "CharacterFactory.h"
+#include "RandomEngine.h"
 
 namespace machiavelli {
 	const int tcp_port{ 1080 };
@@ -14,6 +15,8 @@ namespace machiavelli {
 
 GameHandler::GameHandler()
 {
+	stock = std::make_shared<Player>();
+	stock->set_name("stock");
 	initCharacterCards();
 }
 
@@ -31,7 +34,7 @@ std::shared_ptr<Player> GameHandler::addPlayer(std::shared_ptr<Socket> socket)
 	socket->write(machiavelli::prompt);
 	int age{ std::stoi(socket->readline()) };
 	std::shared_ptr<Player> player{ new Player{ name, age } };
-	*socket << "Welcome, " << name << ", have fun playing our game!\r\n" << machiavelli::prompt;
+	*socket << "Welcome, " << name << ", have fun playing our game!\r\n";
 	player->set_socket(socket);
 	players.push_back(player);
 
@@ -54,7 +57,10 @@ void GameHandler::startGame() {
 	}
 
 	for (std::shared_ptr<Player> player : players) {
-		player->get_socket()->write("Let's start the game, " + firstplayer->get_name() + " may start.");
+		player->get_socket()->write("Let's start the game, " + firstplayer->get_name() + " may start.\r\n");
+		if (player == firstplayer) {
+			dealCharacterCards(player);
+		}
 	}
 }
 
@@ -75,4 +81,19 @@ void GameHandler::initCharacterCards() {
 			characters.emplace(c->getId(), std::move(c));
 		}
 	}
+}
+
+void GameHandler::dealCharacterCards(std::shared_ptr<Player> firstPlayer) {
+	int cardId = RandomEngine::drawCharacterCard();
+
+	firstPlayer->get_socket()->write("De bovenste kaart was de " + characters[cardId]->getName() + ". Kies een van de onderstaande kaarten:");
+	leftOverCharacters[cardId] = std::move(characters[cardId]);
+	for (auto const &character : characters) {
+		if (character.second.get() != nullptr) {
+			firstPlayer->get_socket()->write("\r\n");
+			firstPlayer->get_socket()->write(std::to_string(character.second->getId()));
+			firstPlayer->get_socket()->write(" " + character.second->getName());
+		}
+	}
+
 }
