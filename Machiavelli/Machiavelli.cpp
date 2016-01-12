@@ -19,14 +19,19 @@ using namespace std;
 #include "ClientCommand.h"
 #include "GameHandler.h"
 #include "Player.hpp"
+#include "RandomEngine.h"
 
 namespace machiavelli {
 	const int tcp_port{ 1080 };
 	const string prompt{ "machiavelli> " };
 }
 
+bool turnfinished = true;
+
 static Sync_queue<ClientCommand> queue;
 GameHandler theGame;
+std::string stateOfGame = "PlayersConnecting";
+std::shared_ptr<Player> currentPlayer = nullptr;
 
 void consume_command() // runs in its own thread
 {
@@ -36,8 +41,22 @@ void consume_command() // runs in its own thread
 			shared_ptr<Socket> client{ command.get_client() };
 			shared_ptr<Player> player{ command.get_player() };
 			try {
-				// TODO handle command here
-				*client << player->get_name() << ", you wrote: '" << command.get_cmd() << "', but I'll ignore that for now.\r\n" << machiavelli::prompt;
+				while (!turnfinished) {
+
+				}
+				turnfinished = false;
+				if (stateOfGame == "CharacterCards") {
+
+					std::string s_pickedCard = command.get_cmd();
+					player->get_socket()->write("you picked " + s_pickedCard + "\r\n");
+
+					theGame.pickCharacterCard(std::stoi(s_pickedCard), player);
+					currentPlayer = theGame.getNextPlayer(player);
+				}
+				else {
+					// TODO handle command here
+					*client << player->get_name() << ", you wrote: '" << command.get_cmd() << "', but I'll ignore that for now.\r\n" << machiavelli::prompt;
+				}
 			}
 			catch (const exception& ex) {
 				cerr << "*** exception in consumer thread for player " << player->get_name() << ": " << ex.what() << '\n';
@@ -51,6 +70,7 @@ void consume_command() // runs in its own thread
 					client->write("Sorry, something went wrong during handling of your request.\r\n");
 				}
 			}
+			turnfinished = true;
 		}
 	}
 	catch (...) {
@@ -66,6 +86,38 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 
 		while (true) { // game loop
 			try {
+				if (theGame.getAmountOfPlayers() == 2 && stateOfGame == "PlayersConnecting") {
+					stateOfGame = "CharacterCards";
+				}
+				if (currentPlayer == nullptr) {
+					currentPlayer = theGame.getOldestPlayer();
+				} 
+				while (!turnfinished) {
+
+				}
+				if (stateOfGame == "CharacterCards") {
+					std::this_thread::sleep_for(std::chrono::milliseconds(10));
+					int cardId = RandomEngine::drawCharacterCard(theGame.characters);
+					if (cardId == -1) {
+						stateOfGame == "nextState";
+					}
+					else {
+						currentPlayer->get_socket()->write("De bovenste kaart was de " +
+							theGame.characters[cardId]->getName() +
+							". Kies een van de onderstaande kaarten:"
+							);
+						theGame.layOffCharacterCard(cardId);
+						for (auto const& character : theGame.characters) {
+							if (character.second->getOwner() == nullptr) {
+								currentPlayer->get_socket()->write("\r\n");
+								currentPlayer->get_socket()->write(std::to_string(character.second->getId()));
+								currentPlayer->get_socket()->write(" " + character.second->getName());
+							}
+						}
+						currentPlayer->get_socket()->write("\r\n" + machiavelli::prompt);
+					}
+				}
+				
 				// read first line of request
 				string cmd{ client->readline() };
 				cerr << '[' << client->get_dotted_ip() << " (" << client->get_socket() << ") " << player->get_name() << "] " << cmd << "\r\n";
@@ -77,6 +129,7 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 
 				ClientCommand command{ cmd, client, player };
 				queue.put(command);
+
 
 			}
 			catch (const exception& ex) {

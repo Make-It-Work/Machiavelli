@@ -7,5 +7,5 @@
 //
 #include "stdafx.h"
 #include "Player.hpp"
+#include "Character.h"
 using namespace std;
-

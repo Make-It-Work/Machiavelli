@@ -25,11 +25,13 @@ public:
 
 	void set_socket(std::shared_ptr<Socket> new_socket) { socket = new_socket; }
 	std::shared_ptr<Socket> get_socket() const { return socket; }
+
 	
 private:
 	std::string name;
 	int age;
 	std::shared_ptr<Socket> socket;
+	
 };
 
 #endif /* Player_hpp */

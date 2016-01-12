@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iterator>
 #include <string>
+#include <algorithm>
 #include "CharacterFactory.h"
 #include "RandomEngine.h"
 
@@ -38,14 +39,10 @@ std::shared_ptr<Player> GameHandler::addPlayer(std::shared_ptr<Socket> socket)
 	player->set_socket(socket);
 	players.push_back(player);
 
-	if (players.size() == 2) {
-		startGame();
-	}
-
 	return player;
 }
 
-void GameHandler::startGame() {
+std::shared_ptr<Player> GameHandler::getOldestPlayer() {
 	std::shared_ptr<Player> firstplayer;
 	for (std::shared_ptr<Player> player : players) {
 		if (firstplayer == nullptr) {
@@ -55,13 +52,7 @@ void GameHandler::startGame() {
 			firstplayer = player;
 		}
 	}
-
-	for (std::shared_ptr<Player> player : players) {
-		player->get_socket()->write("Let's start the game, " + firstplayer->get_name() + " may start.\r\n");
-		if (player == firstplayer) {
-			dealCharacterCards(player);
-		}
-	}
+	return firstplayer;
 }
 
 void GameHandler::initCharacterCards() {
@@ -83,17 +74,27 @@ void GameHandler::initCharacterCards() {
 	}
 }
 
-void GameHandler::dealCharacterCards(std::shared_ptr<Player> firstPlayer) {
-	int cardId = RandomEngine::drawCharacterCard();
+void GameHandler::layOffCharacterCard(int cardId) {
+	characters[cardId]->setOwner(stock);
+}
 
-	firstPlayer->get_socket()->write("De bovenste kaart was de " + characters[cardId]->getName() + ". Kies een van de onderstaande kaarten:");
-	leftOverCharacters[cardId] = std::move(characters[cardId]);
-	for (auto const &character : characters) {
-		if (character.second.get() != nullptr) {
-			firstPlayer->get_socket()->write("\r\n");
-			firstPlayer->get_socket()->write(std::to_string(character.second->getId()));
-			firstPlayer->get_socket()->write(" " + character.second->getName());
-		}
+void GameHandler::pickCharacterCard(int cardId, std::shared_ptr<Player> player) {
+	characters[cardId]->setOwner(player);
+}
+
+std::shared_ptr<Player> GameHandler::getNextPlayer(std::shared_ptr<Player> currentPlayer) {
+	//CHANGE THIS
+	auto i = std::find(players.begin(), players.end(), currentPlayer);
+	int nPosition;
+	if (i + 1 != players.end())
+	{
+		nPosition = distance(players.begin(), i) + 1;
+	}
+	else {
+		nPosition = 0;
 	}
 
+	std::cout << " next player at position: " << nPosition << std::endl;
+
+	return players[nPosition];
 }
