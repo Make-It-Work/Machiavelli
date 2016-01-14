@@ -19,6 +19,7 @@ GameHandler::GameHandler()
 	stock = std::make_shared<Player>();
 	stock->set_name("stock");
 	initCharacterCards();
+	initGold();
 }
 
 
@@ -48,7 +49,7 @@ std::shared_ptr<Player> GameHandler::getOldestPlayer() {
 		if (firstplayer == nullptr) {
 			firstplayer = player;
 		}
-		else if (firstplayer->get_age() < player->get_age()) {
+		else if (player->get_age() > firstplayer->get_age()) {
 			firstplayer = player;
 		}
 	}
@@ -74,8 +75,54 @@ void GameHandler::initCharacterCards() {
 	}
 }
 
+void GameHandler::initGold() {
+	for (int i = 0; i < 32; i++) {
+		goldpieces.push_back(std::make_unique<Goldpiece>(stock));
+	}
+}
+
+void GameHandler::divideGold()
+{
+	for (auto const& player : players) {
+		getGoldPiece(player);
+		getGoldPiece(player);
+	}
+}
+
+void GameHandler::getGoldPiece(std::shared_ptr<Player> player) {
+	int counter = 0;
+	while (counter < goldpieces.size() && goldpieces[counter]->getOwner() != stock) {
+		counter++;
+	}
+	goldpieces[counter]->setOwner(player);
+}
+
+int GameHandler::amountOfGoldPieces(std::shared_ptr<Player> player) {
+	int counter = 0;
+	for (const auto& goldpiece : goldpieces) {
+		if (goldpiece->getOwner() == player) {
+			counter++;
+		}
+	}
+	return counter;
+}
+
 void GameHandler::layOffCharacterCard(int cardId) {
-	characters[cardId]->setOwner(stock);
+	if (amountOfCharactersLeft() % 2 == 0) {
+		characters[cardId]->setOwner(stock);
+	}
+}
+
+int GameHandler::amountOfCharactersLeft() {
+	int counter = 0;
+	for each (const auto& kv in characters)
+	{
+		if (kv.second->getOwner() == nullptr) {
+			counter++;
+		}
+	}
+	return counter;
+	
 }
 
 void GameHandler::pickCharacterCard(int cardId, std::shared_ptr<Player> player) {
@@ -97,4 +144,34 @@ std::shared_ptr<Player> GameHandler::getNextPlayer(std::shared_ptr<Player> curre
 	std::cout << " next player at position: " << nPosition << std::endl;
 
 	return players[nPosition];
+}
+
+void GameHandler::showGameStatus(std::shared_ptr<Socket> s) {
+	s->write("Player one: " + players[0]->get_name() + "\r\n");
+	s->write("Goldpieces: " + std::to_string(amountOfGoldPieces(players[0])) + " \r\n");
+
+	s->write("The bank holds: \r\n");
+	s->write("Goldpieces: " + std::to_string(amountOfGoldPieces(stock)) + "\r\n");
+	//s->write("Buildings")
+
+	s->write("Player two: " + players[1]->get_name() + "\r\n");
+	s->write("Goldpieces: " + std::to_string(amountOfGoldPieces(players[1])) + " \r\n");
+	s->write(machiavelli::prompt);
+}
+
+void GameHandler::showHelp(std::shared_ptr<Socket> client) {
+	client->write("In een beurt kun je: \r\n");
+	client->write("1 - 2 goudstukken innen \r\n");
+	client->write("2 - 2 gebouwen van de stapel nemen en er 1 terugleggen \r\n");
+	client->write("3 - Een gebouw bouwen \r\n");
+	client->write("4 - Je karakteractie uitvoeren \r\n");
+	client->write("Karakteracties zijn: \r\n");
+	client->write("1 - Moordenaar - Een karakter vermoorden \r\n");
+	client->write("2 - Dief - Van een andere speler stelen \r\n");
+	client->write("3 - Magiër - Bouwkaarten omruilen \r\n");
+	client->write("4 - Koning - De volgende ronde beginnen en geld verdienen voor gele gebouwen \r\n");
+	client->write("5 - Prediker - Immuun tegen Condotierre en geld verdienen voor blauwe gebouwen \r\n");
+	client->write("6 - Koopman - Extra goudstuk krijgen en geld verdienen voor groene gebouwen \r\n");
+	client->write("7 - Bouwmeester - Twee extra bouwkaarten pakken en drie gebouwen bouwen \r\n");
+	client->write("8 - Condotierre - Gebouw vernietigen en geld verdienen voor rode gebouwen \r\n");
 }

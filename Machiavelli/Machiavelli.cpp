@@ -48,10 +48,15 @@ void consume_command() // runs in its own thread
 				if (stateOfGame == "CharacterCards") {
 
 					std::string s_pickedCard = command.get_cmd();
-					player->get_socket()->write("you picked " + s_pickedCard + "\r\n");
-
-					theGame.pickCharacterCard(std::stoi(s_pickedCard), player);
-					currentPlayer = theGame.getNextPlayer(player);
+					if (std::stoi(s_pickedCard) != NULL) {
+						player->get_socket()->write("you picked " + s_pickedCard + "\r\n");
+						theGame.pickCharacterCard(std::stoi(s_pickedCard), player);
+						currentPlayer = theGame.getNextPlayer(player);
+					}
+					else {
+						player->get_socket()->write("Something went wrong, please pick one of the numbers: \r\n");
+						player->get_socket()->write(machiavelli::prompt);
+					}
 				}
 				else {
 					// TODO handle command here
@@ -89,8 +94,9 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 				if (theGame.getAmountOfPlayers() == 2 && stateOfGame == "PlayersConnecting") {
 					stateOfGame = "CharacterCards";
 				}
-				if (currentPlayer == nullptr) {
+				if (currentPlayer == nullptr && theGame.getAmountOfPlayers() == 2) {
 					currentPlayer = theGame.getOldestPlayer();
+					theGame.divideGold();
 				} 
 				while (!turnfinished) {
 
@@ -125,6 +131,12 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 				if (cmd == "quit") {
 					client->write("Bye!\r\n");
 					break; // out of game loop, will end this thread and close connection
+				}
+				else if (cmd == "status") {
+					theGame.showGameStatus(client);
+				}
+				else if (cmd == "help") {
+					theGame.showHelp(client);
 				}
 
 				ClientCommand command{ cmd, client, player };
@@ -176,4 +188,3 @@ int main(int argc, const char * argv[])
 	consumer.join();
 	return 0;
 }
-
