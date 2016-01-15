@@ -7,6 +7,7 @@
 #include <string>
 #include <algorithm>
 #include "CharacterFactory.h"
+#include "BuildingFactory.h"
 #include "RandomEngine.h"
 
 namespace machiavelli {
@@ -19,6 +20,7 @@ GameHandler::GameHandler()
 	stock = std::make_shared<Player>();
 	stock->set_name("stock");
 	initCharacterCards();
+	initBuildingCards();
 	initGold();
 }
 
@@ -57,6 +59,7 @@ std::shared_ptr<Player> GameHandler::getOldestPlayer() {
 }
 
 void GameHandler::initCharacterCards() {
+	std::unique_ptr<CharacterFactory> charF = std::unique_ptr<CharacterFactory>(new CharacterFactory);
 	const std::string textfile{ "karakterkaarten.csv" };
 	std::ifstream input_file{ textfile }; // stack-based file object; deze constructie opent de file voor lezen
 	std::string line;
@@ -69,9 +72,27 @@ void GameHandler::initCharacterCards() {
 		std::istream_iterator <std::string> beg(buf), end;
 		std::vector<std::string> line(beg, end);
 		for each(std::string s in line) {
-			std::unique_ptr<Character> c = CharacterFactory::createCharacter(s);
+			std::unique_ptr<Character> c = charF->createCharacter(s);
 			characters.emplace(c->getId(), std::move(c));
 		}
+	}
+}
+
+void GameHandler::initBuildingCards() {
+	std::unique_ptr<BuildingFactory> charF = std::unique_ptr<BuildingFactory>(new BuildingFactory);
+	const std::string textfile{ "Bouwkaarten.csv" };
+	std::ifstream input_file{ textfile }; // stack-based file object; deze constructie opent de file voor lezen
+	std::string line;
+
+	// getline() leest een regel die eindigt in een \n
+	// (je kunt ook een 3e param meegeven als je een ander 'regeleinde' wil gebruiken)
+	while (std::getline(input_file, line)) { // getline() geeft false zodra end-of-file is bereikt
+
+		std::istringstream buf(line);
+		std::istream_iterator <std::string> beg(buf), end;
+		std::vector<std::string> line(beg, end);
+		std::unique_ptr<Building> c = charF->createBuilding(line[0]);
+		buildings.push_back(std::move(c));
 	}
 }
 

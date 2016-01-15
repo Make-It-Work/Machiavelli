@@ -15,8 +15,10 @@ private:
 	std::map<int, std::unique_ptr<Character>> leftOverCharacters;
 	std::shared_ptr<Player> stock;
 	std::vector<std::unique_ptr<Goldpiece>> goldpieces;
+	std::vector<std::unique_ptr<Building>> buildings;
 	
 	void initCharacterCards();
+	void initBuildingCards();
 	void initGold();
 	
 

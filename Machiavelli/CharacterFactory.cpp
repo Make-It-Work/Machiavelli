@@ -13,17 +13,8 @@ std::map<std::string, std::function<std::unique_ptr<Character>()>> CharacterFact
 
 CharacterFactory::CharacterFactory()
 {
-	
-}
-
-
-CharacterFactory::~CharacterFactory()
-{
-}
-
-std::unique_ptr<Character> CharacterFactory::createCharacter(std::string s) {
-	factory.emplace("Moordenaar", []() -> std::unique_ptr<Character> { 
-		return std::unique_ptr<Character>(new Moordenaar); 
+	factory.emplace("Moordenaar", []() -> std::unique_ptr<Character> {
+		return std::unique_ptr<Character>(new Moordenaar);
 	});
 	factory.emplace("Dief", []() -> std::unique_ptr<Character> {
 		return std::unique_ptr<Character>(new Dief);
@@ -46,6 +37,14 @@ std::unique_ptr<Character> CharacterFactory::createCharacter(std::string s) {
 	factory.emplace("Condottiere", []() -> std::unique_ptr<Character> {
 		return std::unique_ptr<Character>(new Condottiere);
 	});
+}
+
+
+CharacterFactory::~CharacterFactory()
+{
+}
+
+std::unique_ptr<Character> CharacterFactory::createCharacter(std::string s) {
 	std::string delimiter = ";";
 	size_t pos = 0;
 	std::string token;
