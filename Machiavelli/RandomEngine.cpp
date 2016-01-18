@@ -47,17 +47,24 @@ bool RandomEngine::hasCharactersLeft(const std::map<int, std::unique_ptr<Charact
 	return false;
 }
 
-int RandomEngine::drawBuildingCard(const std::vector<std::unique_ptr<Building>>& map)
+int RandomEngine::drawBuildingCard(const std::map<int, std::unique_ptr<Building>>& map)
 {
 	std::random_device rd;
 	std::default_random_engine e1(rd());
 	std::uniform_int_distribution<int> uniform_dist(1, 65);
 	int index = uniform_dist(e1);
 
-	if (map[index]->getOwner() == nullptr) {
-		return index;
+	auto it = map.find(index);
+	if (it != map.end())
+	{
+		if (it->second->getOwner() == nullptr) {
+			return index;
+		}
+		else {
+			return drawBuildingCard(map);
+		}
 	}
 	else {
-		return drawBuildingCard(map);
+		return -1;
 	}
 }

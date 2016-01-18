@@ -16,7 +16,7 @@ private:
 	std::vector<std::unique_ptr<Building>> buildingsInStore;
 	std::map<int, std::unique_ptr<Character>> leftOverCharacters;
 	std::shared_ptr<Player> stock;
-	std::vector<std::unique_ptr<Building>> buildings;
+	std::map<int, std::unique_ptr<Building>> buildings;
 
 	std::shared_ptr<TurnState> turn = nullptr;
 
@@ -56,6 +56,9 @@ public:
 	void layOffCharacterCard(int cardId);
 	void pickCharacterCard(int cardId, std::shared_ptr<Player> player);
 	Character& getCharacter(int cardId) { return *characters[cardId].get(); };
+
+	//Turn Actions
+	std::string buildBuilding(std::shared_ptr<Player>player, int buildingId);
 
 	//Helper functions
 	std::shared_ptr<Player> getNextPlayer(std::shared_ptr<Player> currentPlayer);
