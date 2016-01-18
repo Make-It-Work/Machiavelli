@@ -11,6 +11,8 @@
 
 #include <string>
 #include <memory>
+#include <algorithm>
+
 class Player;
 class Socket;
 
@@ -23,6 +25,10 @@ public:
 	std::shared_ptr<Socket> get_client() const { return client; }
     std::shared_ptr<Player> get_player() const { return player; }
 
+	bool is_number() {
+		return !cmd.empty() && std::find_if(cmd.begin(),
+			cmd.end(), [](char c) { return !isdigit(c); }) == cmd.end();
+	};
 private:
     std::string cmd;
 	std::shared_ptr<Socket> client;
