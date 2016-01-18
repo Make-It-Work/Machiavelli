@@ -58,6 +58,13 @@ void consume_command() // runs in its own thread
 						player->get_socket()->write(machiavelli::prompt);
 					}
 				}
+				else if (stateOfGame == "TurnState")
+				{
+					if (player == currentPlayer)
+					{
+
+					}
+				}
 				else {
 					// TODO handle command here
 					*client << player->get_name() << ", you wrote: '" << command.get_cmd() << "', but I'll ignore that for now.\r\n" << machiavelli::prompt;
@@ -106,7 +113,8 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 					std::this_thread::sleep_for(std::chrono::milliseconds(10));
 					int cardId = RandomEngine::drawCharacterCard(theGame.characters);
 					if (cardId == -1) {
-						stateOfGame == "nextState";
+						cout << "changing state to turns";
+						stateOfGame = "TurnState";
 					}
 					else {
 						currentPlayer->get_socket()->write("De bovenste kaart was de " +
@@ -123,6 +131,17 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 						}
 						currentPlayer->get_socket()->write("\r\n" + machiavelli::prompt);
 					}
+				}
+				if (stateOfGame == "TurnState")
+				{
+					cout << "turn time";
+					currentPlayer = theGame.nextTurn();
+					if (currentPlayer == theGame.getStock())
+						continue;
+					cout << "turn starting";
+					Character& chr = theGame.getCharacter(theGame.getTurnID());
+					currentPlayer->get_socket()->write("Je bent nu de: " + chr.getName());
+
 				}
 				
 				// read first line of request

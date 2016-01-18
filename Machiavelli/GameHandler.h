@@ -21,7 +21,8 @@ private:
 	void initBuildingCards();
 	void initGold();
 	
-
+	//turn data
+	int turnID = -1;
 public:
 	GameHandler();
 	~GameHandler();
@@ -40,16 +41,22 @@ public:
 
 	void getBuilding(std::shared_ptr<Player> player);
 
+	//turn functions
+	std::shared_ptr<Player> nextTurn();
+	int getTurnID() { return turnID; };
+
 	//CharacterCard functions
 	int amountOfCharactersLeft();
 	void layOffCharacterCard(int cardId);
 	void pickCharacterCard(int cardId, std::shared_ptr<Player> player);
+	Character& getCharacter(int cardId) { return *characters[cardId].get(); };
 
 	//Helper functions
 	std::shared_ptr<Player> getNextPlayer(std::shared_ptr<Player> currentPlayer);
 	void showGameStatus(std::shared_ptr<Socket> s);
 	std::string buildingsForPlayer(std::shared_ptr<Player> player);
 	void showHelp(std::shared_ptr<Socket> client);
+	std::shared_ptr<Player> getStock() { return stock; };
 		
 };
 

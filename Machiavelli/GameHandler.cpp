@@ -225,3 +225,14 @@ void GameHandler::showHelp(std::shared_ptr<Socket> client) {
 	client->write("7 - Bouwmeester - Twee extra bouwkaarten pakken en drie gebouwen bouwen \r\n");
 	client->write("8 - Condotierre - Gebouw vernietigen en geld verdienen voor rode gebouwen \r\n");
 }
+
+std::shared_ptr<Player> GameHandler::nextTurn() {
+	for each (const auto& kv in characters)
+	{
+		if (kv.second->getOwner() != nullptr) {
+			turnID = kv.first;
+			return kv.second->getOwner();
+		}
+	}
+	return stock;
+}
