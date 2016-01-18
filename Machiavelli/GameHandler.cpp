@@ -110,6 +110,14 @@ void GameHandler::divideGold()
 	}
 }
 
+void GameHandler::divideGold() {
+	for (auto const& player : players) {
+		for (int i = 0; i < 4; i++) {
+
+		}
+	}
+}
+
 void GameHandler::getGoldPiece(std::shared_ptr<Player> player) {
 	int counter = 0;
 	while (counter < goldpieces.size() && goldpieces[counter]->getOwner() != stock) {

@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A4F874A5-3F1D-47D0-9388-A51A0AA709FC}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Machiavelli</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Bibliotheek.h" />
+    <ClInclude Include="Bouwmeester.h" />
+    <ClInclude Include="Building.h" />
+    <ClInclude Include="BuildingFactory.h" />
+    <ClInclude Include="Burcht.h" />
+    <ClInclude Include="Character.h" />
+    <ClInclude Include="CharacterFactory.h" />
+    <ClInclude Include="ClientCommand.h" />
+    <ClInclude Include="Condottiere.h" />
+    <ClInclude Include="Dief.h" />
+    <ClInclude Include="Drakenpoort.h" />
+    <ClInclude Include="GameHandler.h" />
+    <ClInclude Include="Gevangenis.h" />
+    <ClInclude Include="Goldpiece.h" />
+    <ClInclude Include="Handelshuis.h" />
+    <ClInclude Include="Haven.h" />
+    <ClInclude Include="HofDerWonderen.h" />
+    <ClInclude Include="Kasteel.h" />
+    <ClInclude Include="Kathedraal.h" />
+    <ClInclude Include="Kerk.h" />
+    <ClInclude Include="Kerker.h" />
+    <ClInclude Include="Kerkhof.h" />
+    <ClInclude Include="Klooster.h" />
+    <ClInclude Include="Koning.h" />
+    <ClInclude Include="Koopman.h" />
+    <ClInclude Include="Laboratorium.h" />
+    <ClInclude Include="Landgoed.h" />
+    <ClInclude Include="Magier.h" />
+    <ClInclude Include="Markt.h" />
+    <ClInclude Include="Moordenaar.h" />
+    <ClInclude Include="Observatorium.h" />
+    <ClInclude Include="Paleis.h" />
+    <ClInclude Include="Player.hpp" />
+    <ClInclude Include="Prediker.h" />
+    <ClInclude Include="Raadhuis.h" />
+    <ClInclude Include="RandomEngine.h" />
+    <ClInclude Include="SchoolVoorMagiers.h" />
+    <ClInclude Include="Socket.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Sync_queue.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="Taveerne.h" />
+    <ClInclude Include="Tempel.h" />
+    <ClInclude Include="throw.h" />
+    <ClInclude Include="Toernooiveld.h" />
+    <ClInclude Include="Universiteit.h" />
+    <ClInclude Include="Wachttoren.h" />
+    <ClInclude Include="Werkplaats.h" />
+    <ClInclude Include="Winkels.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Bibliotheek.cpp" />
+    <ClCompile Include="Bouwmeester.cpp" />
+    <ClCompile Include="Building.cpp" />
+    <ClCompile Include="BuildingFactory.cpp" />
+    <ClCompile Include="Burcht.cpp" />
+    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="CharacterFactory.cpp" />
+    <ClCompile Include="Condottiere.cpp" />
+    <ClCompile Include="Dief.cpp" />
+    <ClCompile Include="Drakenpoort.cpp" />
+    <ClCompile Include="GameHandler.cpp" />
+    <ClCompile Include="Gevangenis.cpp" />
+    <ClCompile Include="Goldpiece.cpp" />
+    <ClCompile Include="Handelshuis.cpp" />
+    <ClCompile Include="Haven.cpp" />
+    <ClCompile Include="HofDerWonderen.cpp" />
+    <ClCompile Include="Kasteel.cpp" />
+    <ClCompile Include="Kathedraal.cpp" />
+    <ClCompile Include="Kerk.cpp" />
+    <ClCompile Include="Kerker.cpp" />
+    <ClCompile Include="Kerkhof.cpp" />
+    <ClCompile Include="Klooster.cpp" />
+    <ClCompile Include="Koning.cpp" />
+    <ClCompile Include="Koopman.cpp" />
+    <ClCompile Include="Laboratorium.cpp" />
+    <ClCompile Include="Landgoed.cpp" />
+    <ClCompile Include="Machiavelli.cpp" />
+    <ClCompile Include="Magier.cpp" />
+    <ClCompile Include="Markt.cpp" />
+    <ClCompile Include="Moordenaar.cpp" />
+    <ClCompile Include="Observatorium.cpp" />
+    <ClCompile Include="Paleis.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Prediker.cpp" />
+    <ClCompile Include="Raadhuis.cpp" />
+    <ClCompile Include="RandomEngine.cpp" />
+    <ClCompile Include="SchoolVoorMagiers.cpp" />
+    <ClCompile Include="Socket.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Taveerne.cpp" />
+    <ClCompile Include="Tempel.cpp" />
+    <ClCompile Include="throw.cpp" />
+    <ClCompile Include="Toernooiveld.cpp" />
+    <ClCompile Include="Universiteit.cpp" />
+    <ClCompile Include="Wachttoren.cpp" />
+    <ClCompile Include="Werkplaats.cpp" />
+    <ClCompile Include="Winkels.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

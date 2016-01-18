@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Characters">
+      <UniqueIdentifier>{2f4b862a-eaae-49ae-a9b6-000e9de02208}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Characters">
+      <UniqueIdentifier>{701554ef-91ac-4afd-a4e7-78fab15bb8c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Buildings">
+      <UniqueIdentifier>{ebc4f928-7a8e-423a-a1c2-90992183f078}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Buildings">
+      <UniqueIdentifier>{f613e270-6548-400d-85fd-d5f2ad3bcf13}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Socket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sync_queue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="throw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dief.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Magier.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Moordenaar.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Koning.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Prediker.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Koopman.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Bouwmeester.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Goldpiece.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Building.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildingFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Landgoed.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Kasteel.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Paleis.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Markt.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Taveerne.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Winkels.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Handelshuis.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Raadhuis.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Haven.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Condottiere.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Burcht.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Gevangenis.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Kathedraal.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Kerk.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Klooster.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Tempel.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Toernooiveld.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Wachttoren.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Werkplaats.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Universiteit.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="SchoolVoorMagiers.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Observatorium.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Laboratorium.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Kerkhof.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Kerker.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="HofDerWonderen.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Drakenpoort.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Bibliotheek.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Machiavelli.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Socket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="throw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Magier.cpp">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Moordenaar.cpp">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Dief.cpp">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Koning.cpp">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Prediker.cpp">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Koopman.cpp">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Bouwmeester.cpp">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Goldpiece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BuildingFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Building.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Landgoed.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Kasteel.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Paleis.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Markt.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Taveerne.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Winkels.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Handelshuis.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Condottiere.cpp">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Haven.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Raadhuis.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Burcht.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Gevangenis.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Kathedraal.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Kerk.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Klooster.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Tempel.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Toernooiveld.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Wachttoren.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Bibliotheek.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Werkplaats.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Universiteit.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="SchoolVoorMagiers.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Observatorium.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Laboratorium.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Kerkhof.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Kerker.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="HofDerWonderen.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Drakenpoort.cpp">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
