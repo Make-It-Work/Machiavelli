@@ -1,5 +1,9 @@
 .vs/Machiavelli/v14/.suo
 Debug/*
 *.ipch
+Machiavelli.sdf
+Machiavelli.sln
 Machiavelli/Debug/*
 Machiavelli.opensdf
+Machiavelli/Machiavelli/Machiavelli.vcxproj
+Machiavelli/Machiavelli/Machiavelli.vcxproj.filters
