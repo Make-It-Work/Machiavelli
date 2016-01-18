@@ -25,13 +25,14 @@ public:
 
 	void set_socket(std::shared_ptr<Socket> new_socket) { socket = new_socket; }
 	std::shared_ptr<Socket> get_socket() const { return socket; }
-
-	
+	int getGold() { return gold; };
+	void addGold(int nGold) { gold += nGold; };
+	void takeGold(int nGold) { gold -= nGold; };
 private:
 	std::string name;
 	int age;
 	std::shared_ptr<Socket> socket;
-	
+	int gold = 0;
 };
 
 #endif /* Player_hpp */

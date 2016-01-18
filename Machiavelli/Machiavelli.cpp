@@ -113,7 +113,6 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 					std::this_thread::sleep_for(std::chrono::milliseconds(10));
 					int cardId = RandomEngine::drawCharacterCard(theGame.characters);
 					if (cardId == -1) {
-						cout << "changing state to turns";
 						stateOfGame = "TurnState";
 					}
 					else {
@@ -134,13 +133,15 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 				}
 				if (stateOfGame == "TurnState")
 				{
-					cout << "turn time";
+					cout << "Starting turn state";
 					currentPlayer = theGame.nextTurn();
 					if (currentPlayer == theGame.getStock())
 						continue;
-					cout << "turn starting";
 					Character& chr = theGame.getCharacter(theGame.getTurnID());
-					currentPlayer->get_socket()->write("Je bent nu de: " + chr.getName());
+					currentPlayer->get_socket()->write("Je bent nu de: " + chr.getName() + "\r\n");
+					currentPlayer->get_socket()->write("Goud: " + std::to_string(currentPlayer->getGold()) + "\r\n");
+					currentPlayer->get_socket()->write("\r\n Gebouwen: \r\n");
+					theGame.printAvailableBuildings(currentPlayer);
 
 				}
 				

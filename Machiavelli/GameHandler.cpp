@@ -21,7 +21,6 @@ GameHandler::GameHandler()
 	stock->set_name("stock");
 	initCharacterCards();
 	initBuildingCards();
-	initGold();
 }
 
 
@@ -96,36 +95,24 @@ void GameHandler::initBuildingCards() {
 	}
 }
 
-void GameHandler::initGold() {
-	for (int i = 0; i < 32; i++) {
-		goldpieces.push_back(std::make_unique<Goldpiece>(stock));
-	}
-}
-
 void GameHandler::divideGold()
 {
+	std::cout << "dividing gold motherfucker \r\n";
 	for (auto const& player : players) {
-		getGoldPiece(player);
-		getGoldPiece(player);
+		addGold(player, 2);
 	}
 }
 
-void GameHandler::getGoldPiece(std::shared_ptr<Player> player) {
-	int counter = 0;
-	while (counter < goldpieces.size() && goldpieces[counter]->getOwner() != stock) {
-		counter++;
+void GameHandler::addGold(std::shared_ptr<Player> playerm, int gold) {
+	if (goldLeft > gold)
+	{
+		playerm->addGold(gold);
+		goldLeft -= gold;
 	}
-	goldpieces[counter]->setOwner(player);
 }
 
 int GameHandler::amountOfGoldPieces(std::shared_ptr<Player> player) {
-	int counter = 0;
-	for (const auto& goldpiece : goldpieces) {
-		if (goldpiece->getOwner() == player) {
-			counter++;
-		}
-	}
-	return counter;
+	return player->getGold();
 }
 
 
@@ -235,4 +222,12 @@ std::shared_ptr<Player> GameHandler::nextTurn() {
 		}
 	}
 	return stock;
+}
+
+void GameHandler::printAvailableBuildings(std::shared_ptr<Player> player) {
+	for (const auto& building : buildings) {
+		if (building->getOwner() == player && !building->isPlayed()) {
+			player->get_socket()->write(building->getName() + "( " + building->getColor() + ", " + std::to_string(building->getCost()) + ")\r\n");
+		}
+	}
 }

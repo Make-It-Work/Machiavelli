@@ -14,12 +14,12 @@ private:
 	std::vector<std::unique_ptr<Building>> buildingsInStore;
 	std::map<int, std::unique_ptr<Character>> leftOverCharacters;
 	std::shared_ptr<Player> stock;
-	std::vector<std::unique_ptr<Goldpiece>> goldpieces;
 	std::vector<std::unique_ptr<Building>> buildings;
+
+	int goldLeft = 32;
 	
 	void initCharacterCards();
 	void initBuildingCards();
-	void initGold();
 	
 	//turn data
 	int turnID = -1;
@@ -34,9 +34,9 @@ public:
 	std::shared_ptr<Player> addPlayer(std::shared_ptr<Socket> socket);
 	void divideGold();
 
-	void getGoldPiece(std::shared_ptr<Player>);
-
+	void addGold(std::shared_ptr<Player>, int gold);
 	int amountOfGoldPieces(std::shared_ptr<Player> player);
+
 	void divideBuilding();
 
 	void getBuilding(std::shared_ptr<Player> player);
@@ -44,6 +44,7 @@ public:
 	//turn functions
 	std::shared_ptr<Player> nextTurn();
 	int getTurnID() { return turnID; };
+	void printAvailableBuildings(std::shared_ptr<Player> player);
 
 	//CharacterCard functions
 	int amountOfCharactersLeft();
