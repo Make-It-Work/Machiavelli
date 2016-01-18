@@ -97,6 +97,7 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 				if (currentPlayer == nullptr && theGame.getAmountOfPlayers() == 2) {
 					currentPlayer = theGame.getOldestPlayer();
 					theGame.divideGold();
+					theGame.divideBuilding();
 				} 
 				while (!turnfinished) {
 

@@ -16,6 +16,8 @@ public:
 	int getCost() { return cost; }
 	void setPoints(int p) { points = p; }
 	int getPoints() { return points; }
+	bool isPlayed() { return played; }
+	void setPlayed(bool play) { played = play; }
 
 protected:
 	std::shared_ptr<Player> owner = nullptr;
@@ -23,4 +25,5 @@ protected:
 	std::string name = "";
 	int cost;
 	int points;
+	bool played;
 };

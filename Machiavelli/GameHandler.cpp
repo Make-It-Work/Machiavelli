@@ -110,14 +110,6 @@ void GameHandler::divideGold()
 	}
 }
 
-void GameHandler::divideGold() {
-	for (auto const& player : players) {
-		for (int i = 0; i < 4; i++) {
-
-		}
-	}
-}
-
 void GameHandler::getGoldPiece(std::shared_ptr<Player> player) {
 	int counter = 0;
 	while (counter < goldpieces.size() && goldpieces[counter]->getOwner() != stock) {
@@ -134,6 +126,20 @@ int GameHandler::amountOfGoldPieces(std::shared_ptr<Player> player) {
 		}
 	}
 	return counter;
+}
+
+
+void GameHandler::divideBuilding() {
+	for (auto const& player : players) {
+		for (int i = 0; i < 4; i++) {
+			getBuilding(player);
+		}
+	}
+}
+
+void GameHandler::getBuilding(std::shared_ptr<Player> player) {
+	int cardId = RandomEngine::drawBuildingCard(buildings);
+	buildings[cardId]->setOwner(player);
 }
 
 void GameHandler::layOffCharacterCard(int cardId) {
@@ -178,6 +184,7 @@ std::shared_ptr<Player> GameHandler::getNextPlayer(std::shared_ptr<Player> curre
 void GameHandler::showGameStatus(std::shared_ptr<Socket> s) {
 	s->write("Player one: " + players[0]->get_name() + "\r\n");
 	s->write("Goldpieces: " + std::to_string(amountOfGoldPieces(players[0])) + " \r\n");
+	s->write("Buildings: " + buildingsForPlayer(players[0]) + "\r\n");
 
 	s->write("The bank holds: \r\n");
 	s->write("Goldpieces: " + std::to_string(amountOfGoldPieces(stock)) + "\r\n");
@@ -185,7 +192,21 @@ void GameHandler::showGameStatus(std::shared_ptr<Socket> s) {
 
 	s->write("Player two: " + players[1]->get_name() + "\r\n");
 	s->write("Goldpieces: " + std::to_string(amountOfGoldPieces(players[1])) + " \r\n");
+	s->write("Buildings: " + buildingsForPlayer(players[1]) + "\r\n");
 	s->write(machiavelli::prompt);
+}
+
+std::string GameHandler::buildingsForPlayer(std::shared_ptr<Player> player) {
+	std::string s = "";
+	int counter = 0;
+	for (const auto& building : buildings) {
+		if (building->getOwner() == player && building->isPlayed()) {
+			s += building->getName() + " ";
+			counter++;
+		}
+	}
+	s = std::to_string(counter) + s;
+	return s;
 }
 
 void GameHandler::showHelp(std::shared_ptr<Socket> client) {

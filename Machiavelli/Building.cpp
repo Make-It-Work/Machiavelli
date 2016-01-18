@@ -4,6 +4,7 @@
 
 Building::Building()
 {
+	played = false;
 }
 
 

@@ -36,6 +36,9 @@ public:
 	void getGoldPiece(std::shared_ptr<Player>);
 
 	int amountOfGoldPieces(std::shared_ptr<Player> player);
+	void divideBuilding();
+
+	void getBuilding(std::shared_ptr<Player> player);
 
 	//CharacterCard functions
 	int amountOfCharactersLeft();
@@ -45,6 +48,7 @@ public:
 	//Helper functions
 	std::shared_ptr<Player> getNextPlayer(std::shared_ptr<Player> currentPlayer);
 	void showGameStatus(std::shared_ptr<Socket> s);
+	std::string buildingsForPlayer(std::shared_ptr<Player> player);
 	void showHelp(std::shared_ptr<Socket> client);
 		
 };
