@@ -12,10 +12,10 @@ public:
 	Character();
 	~Character();
 	void setId(int _id) { id = _id; }
-	int getId() { return id; }
+	int getId() const { return id; }
 	void setOwner(std::shared_ptr<Player> player) { owner = player; }
-	std::shared_ptr<Player> getOwner() { return owner; }
-	std::string getName() { return name; }
+	std::shared_ptr<Player> getOwner() const { return owner; }
+	std::string getName() const { return name; }
 	virtual void execute() = 0;
 };
 

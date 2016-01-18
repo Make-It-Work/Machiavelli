@@ -177,6 +177,12 @@
     <ClInclude Include="Bibliotheek.h">
       <Filter>Header Files\Buildings</Filter>
     </ClInclude>
+    <ClInclude Include="TurnStartState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TurnState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -319,6 +325,12 @@
     </ClCompile>
     <ClCompile Include="Drakenpoort.cpp">
       <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="TurnStartState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TurnState.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

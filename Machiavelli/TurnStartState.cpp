@@ -2,9 +2,10 @@
 #include "TurnStartState.h"
 #include "Character.h"
 
-TurnStartState::TurnStartState(GameHandler gh)
+//TurnStartState::TurnStartState(GameHandler& gh)
+TurnStartState::TurnStartState()
 {
-	game = gh;
+	//game = gh;
 }
 
 
@@ -12,9 +13,9 @@ TurnStartState::~TurnStartState()
 {
 }
 
-void TurnStartState::print(std::shared_ptr<Player> player)
+void TurnStartState::print(std::shared_ptr<Player> player, const Character& chr)
 {
-	Character& chr = game.getCharacter(game.getTurnID());
+	//Character& chr = game.getCharacter(game.getTurnID());
 	player->get_socket()->write("Je bent nu de: " + chr.getName() + "\r\n");
 	player->get_socket()->write("Goud: " + std::to_string(player->getGold()) + "\r\n");
 	player->get_socket()->write("\r\nGebouwen: \r\n");
@@ -33,7 +34,7 @@ void TurnStartState::handleCommand(ClientCommand command)
 
 }
 
-std::shared_ptr<TurnState> TurnStartState::nextState()
-{
-
-}
+//std::shared_ptr<TurnState> TurnStartState::nextState()
+//{
+//
+//}

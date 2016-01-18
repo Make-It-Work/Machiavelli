@@ -1,3 +1,2 @@
+#include "stdafx.h"
 #include "TurnState.h"
-
-void TurnState::print();

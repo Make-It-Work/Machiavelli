@@ -190,6 +190,8 @@
     <ClInclude Include="Tempel.h" />
     <ClInclude Include="throw.h" />
     <ClInclude Include="Toernooiveld.h" />
+    <ClInclude Include="TurnStartState.h" />
+    <ClInclude Include="TurnState.h" />
     <ClInclude Include="Universiteit.h" />
     <ClInclude Include="Wachttoren.h" />
     <ClInclude Include="Werkplaats.h" />
@@ -244,6 +246,8 @@
     <ClCompile Include="Tempel.cpp" />
     <ClCompile Include="throw.cpp" />
     <ClCompile Include="Toernooiveld.cpp" />
+    <ClCompile Include="TurnStartState.cpp" />
+    <ClCompile Include="TurnState.cpp" />
     <ClCompile Include="Universiteit.cpp" />
     <ClCompile Include="Wachttoren.cpp" />
     <ClCompile Include="Werkplaats.cpp" />

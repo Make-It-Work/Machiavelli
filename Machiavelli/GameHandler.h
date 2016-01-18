@@ -13,7 +13,6 @@ class GameHandler
 {
 private:
 	std::vector<std::shared_ptr<Player>> players;
-	std::vector<std::unique_ptr<Building>> buildingsInStore;
 	std::map<int, std::unique_ptr<Character>> leftOverCharacters;
 	std::shared_ptr<Player> stock;
 	std::map<int, std::unique_ptr<Building>> buildings;

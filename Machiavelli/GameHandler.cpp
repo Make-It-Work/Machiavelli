@@ -170,7 +170,7 @@ std::string GameHandler::buildBuilding(std::shared_ptr<Player> player, int build
 }
 
 std::shared_ptr<Player> GameHandler::getNextPlayer(std::shared_ptr<Player> currentPlayer) {
-	//CHANGE THIS
+	
 	auto i = std::find(players.begin(), players.end(), currentPlayer);
 	int nPosition;
 	if (i + 1 != players.end())
@@ -236,7 +236,7 @@ std::shared_ptr<Player> GameHandler::startTurns() {
 	{
 		if (kv.second->getOwner() != nullptr && kv.first > turnID) {
 			turnID = kv.first;
-			turn = std::make_shared<TurnStartState>(*this);
+			turn = std::make_shared<TurnStartState>();
 			return kv.second->getOwner();
 		}
 	}
@@ -253,5 +253,5 @@ void GameHandler::printBuildings(std::shared_ptr<Player> player, bool built) {
 
 void GameHandler::printTurn(std::shared_ptr<Player> player)
 {
-
+	turn->print(player, *characters[turnID]);
 }
