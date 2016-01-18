@@ -17,7 +17,7 @@ public:
 	~RandomEngine();
 
 	static int drawCharacterCard(const std::map<int, std::unique_ptr<Character>>& characters);
-	static int drawBuildingCard(const std::vector<std::unique_ptr<Building>>& characters);
+	static int drawBuildingCard(const std::map<int, std::unique_ptr<Building>>& characters);
 	static bool hasCharactersLeft(const std::map<int, std::unique_ptr<Character>>& map);
 };
 

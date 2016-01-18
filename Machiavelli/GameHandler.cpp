@@ -82,6 +82,7 @@ void GameHandler::initBuildingCards() {
 	const std::string textfile{ "Bouwkaarten.csv" };
 	std::ifstream input_file{ textfile }; // stack-based file object; deze constructie opent de file voor lezen
 	std::string line;
+	int counter = 1;
 
 	// getline() leest een regel die eindigt in een \n
 	// (je kunt ook een 3e param meegeven als je een ander 'regeleinde' wil gebruiken)
@@ -91,7 +92,8 @@ void GameHandler::initBuildingCards() {
 		std::istream_iterator <std::string> beg(buf), end;
 		std::vector<std::string> line(beg, end);
 		std::unique_ptr<Building> c = charF->createBuilding(line[0]);
-		buildings.push_back(std::move(c));
+		buildings.emplace(std::make_pair(counter, std::move(c)));
+		counter++;
 	}
 }
 
@@ -151,6 +153,21 @@ void GameHandler::pickCharacterCard(int cardId, std::shared_ptr<Player> player) 
 	characters[cardId]->setOwner(player);
 }
 
+std::string GameHandler::buildBuilding(std::shared_ptr<Player> player, int buildingId)
+{
+	if (buildings[buildingId]->getOwner() == player && !buildings[buildingId]->isPlayed()) {
+		if (player->getGold() >= buildings[buildingId]->getCost()) {
+			player->takeGold(buildings[buildingId]->getCost());
+			goldLeft += buildings[buildingId]->getCost();
+			buildings[buildingId]->setPlayed(true);
+		}
+		else {
+			return "No gold";
+		}
+	}
+	return "Not owned";
+}
+
 std::shared_ptr<Player> GameHandler::getNextPlayer(std::shared_ptr<Player> currentPlayer) {
 	//CHANGE THIS
 	auto i = std::find(players.begin(), players.end(), currentPlayer);
@@ -187,8 +204,8 @@ std::string GameHandler::buildingsForPlayer(std::shared_ptr<Player> player) {
 	std::string s = "";
 	int counter = 0;
 	for (const auto& building : buildings) {
-		if (building->getOwner() == player && building->isPlayed()) {
-			s += building->getName() + " ";
+		if (building.second->getOwner() == player && building.second->isPlayed()) {
+			s += building.second->getName() + " ";
 			counter++;
 		}
 	}
@@ -226,8 +243,8 @@ std::shared_ptr<Player> GameHandler::nextTurn() {
 
 void GameHandler::printAvailableBuildings(std::shared_ptr<Player> player) {
 	for (const auto& building : buildings) {
-		if (building->getOwner() == player && !building->isPlayed()) {
-			player->get_socket()->write(building->getName() + "( " + building->getColor() + ", " + std::to_string(building->getCost()) + ")\r\n");
+		if (building.second->getOwner() == player && !building.second->isPlayed()) {
+			player->get_socket()->write(building.second->getName() + "( " + building.second->getColor() + ", " + std::to_string(building.second->getCost()) + ")\r\n");
 		}
 	}
 }
