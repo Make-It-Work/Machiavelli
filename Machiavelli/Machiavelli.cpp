@@ -114,7 +114,7 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 					int cardId = RandomEngine::drawCharacterCard(theGame.characters);
 					if (cardId == -1) {
 						stateOfGame = "TurnState";
-						currentPlayer = theGame.nextTurn();
+						currentPlayer = theGame.startTurns();
 					}
 					else {
 						currentPlayer->get_socket()->write("De bovenste kaart was de " +

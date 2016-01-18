@@ -47,7 +47,7 @@ public:
 
 	//turn functions
 	void printTurn(std::shared_ptr<Player> player);
-	std::shared_ptr<Player> nextTurn();
+	std::shared_ptr<Player> startTurns();
 	int getTurnID() { return turnID; };
 	void printBuildings(std::shared_ptr<Player> player, bool built);
 

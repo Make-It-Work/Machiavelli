@@ -9,6 +9,7 @@
 #include "CharacterFactory.h"
 #include "BuildingFactory.h"
 #include "RandomEngine.h"
+#include "TurnStartState.h"
 
 namespace machiavelli {
 	const int tcp_port{ 1080 };
@@ -203,7 +204,7 @@ void GameHandler::showGameStatus(std::shared_ptr<Socket> s) {
 std::string GameHandler::buildingsForPlayer(std::shared_ptr<Player> player) {
 	std::string s = "";
 	int counter = 0;
-	for (const auto& building : buildings) {
+	for each (const auto& building in buildings) {
 		if (building.second->getOwner() == player && building.second->isPlayed()) {
 			s += building.second->getName() + " ";
 			counter++;
@@ -230,11 +231,12 @@ void GameHandler::showHelp(std::shared_ptr<Socket> client) {
 	client->write("8 - Condotierre - Gebouw vernietigen en geld verdienen voor rode gebouwen \r\n");
 }
 
-std::shared_ptr<Player> GameHandler::nextTurn() {
+std::shared_ptr<Player> GameHandler::startTurns() {
 	for each (const auto& kv in characters)
 	{
 		if (kv.second->getOwner() != nullptr && kv.first > turnID) {
 			turnID = kv.first;
+			turn = std::make_shared<TurnStartState>(*this);
 			return kv.second->getOwner();
 		}
 	}
@@ -242,8 +244,8 @@ std::shared_ptr<Player> GameHandler::nextTurn() {
 }
 
 void GameHandler::printBuildings(std::shared_ptr<Player> player, bool built) {
-	for (const auto& building : buildings) {
-		if (building.second->getOwner() == player && !building.second->isPlayed() && building.second->isPlayed() == built) {
+	for each (const auto& building in buildings) {
+		if (building.second->getOwner() == player && building.second->isPlayed() == built) {
 			player->get_socket()->write(building.second->getName() + "( " + building.second->getColor() + ", " + std::to_string(building.second->getCost()) + ")\r\n");
 		}
 	}
