@@ -114,6 +114,7 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 					int cardId = RandomEngine::drawCharacterCard(theGame.characters);
 					if (cardId == -1) {
 						stateOfGame = "TurnState";
+						currentPlayer = theGame.nextTurn();
 					}
 					else {
 						currentPlayer->get_socket()->write("De bovenste kaart was de " +
@@ -134,14 +135,9 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 				if (stateOfGame == "TurnState")
 				{
 					cout << "Starting turn state";
-					currentPlayer = theGame.nextTurn();
 					if (currentPlayer == theGame.getStock())
 						continue;
-					Character& chr = theGame.getCharacter(theGame.getTurnID());
-					currentPlayer->get_socket()->write("Je bent nu de: " + chr.getName() + "\r\n");
-					currentPlayer->get_socket()->write("Goud: " + std::to_string(currentPlayer->getGold()) + "\r\n");
-					currentPlayer->get_socket()->write("\r\n Gebouwen: \r\n");
-					theGame.printAvailableBuildings(currentPlayer);
+					theGame.printTurn(currentPlayer);
 
 				}
 				

@@ -7,6 +7,8 @@
 #include "Building.h"
 #include "Character.h"
 #include "Goldpiece.h"
+#include "TurnState.h"
+
 class GameHandler
 {
 private:
@@ -15,6 +17,8 @@ private:
 	std::map<int, std::unique_ptr<Character>> leftOverCharacters;
 	std::shared_ptr<Player> stock;
 	std::vector<std::unique_ptr<Building>> buildings;
+
+	std::shared_ptr<TurnState> turn = nullptr;
 
 	int goldLeft = 32;
 	
@@ -42,9 +46,10 @@ public:
 	void getBuilding(std::shared_ptr<Player> player);
 
 	//turn functions
+	void printTurn(std::shared_ptr<Player> player);
 	std::shared_ptr<Player> nextTurn();
 	int getTurnID() { return turnID; };
-	void printAvailableBuildings(std::shared_ptr<Player> player);
+	void printBuildings(std::shared_ptr<Player> player, bool built);
 
 	//CharacterCard functions
 	int amountOfCharactersLeft();

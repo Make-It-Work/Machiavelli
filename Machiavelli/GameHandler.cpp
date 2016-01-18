@@ -216,7 +216,7 @@ void GameHandler::showHelp(std::shared_ptr<Socket> client) {
 std::shared_ptr<Player> GameHandler::nextTurn() {
 	for each (const auto& kv in characters)
 	{
-		if (kv.second->getOwner() != nullptr) {
+		if (kv.second->getOwner() != nullptr && kv.first > turnID) {
 			turnID = kv.first;
 			return kv.second->getOwner();
 		}
@@ -224,10 +224,14 @@ std::shared_ptr<Player> GameHandler::nextTurn() {
 	return stock;
 }
 
-void GameHandler::printAvailableBuildings(std::shared_ptr<Player> player) {
+void GameHandler::printBuildings(std::shared_ptr<Player> player, bool built) {
 	for (const auto& building : buildings) {
-		if (building->getOwner() == player && !building->isPlayed()) {
-			player->get_socket()->write(building->getName() + "( " + building->getColor() + ", " + std::to_string(building->getCost()) + ")\r\n");
+		if (building->getOwner() == player && building->isPlayed() == built) {
+			player->get_socket()->write(building->getName() + "(" + building->getColor() + ", " + std::to_string(building->getCost()) + ")\r\n");
 		}
 	}
+}
+
+void GameHandler::printTurn(std::shared_ptr<Player> player)
+{
 }
