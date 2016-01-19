@@ -28,11 +28,16 @@ public:
 	int getGold() { return gold; };
 	void addGold(int nGold) { gold += nGold; };
 	void takeGold(int nGold) { gold -= nGold; };
+
+	void addPoints(int nPoints) { score += nPoints; };
+	int getPoints() { return score; };
 private:
 	std::string name;
 	int age;
 	std::shared_ptr<Socket> socket;
 	int gold = 0;
+
+	int score = 0;
 };
 
 #endif /* Player_hpp */
