@@ -11,8 +11,9 @@ public:
 	TurnState() {};
 	~TurnState() {};
 	//virtual std::shared_ptr<TurnState> nextState() {};
-	virtual void print(std::shared_ptr<Player> player, const Character& chr) {};
+	virtual void print(std::shared_ptr<Player> player) {};
 	virtual void handleCommand(ClientCommand command, std::shared_ptr<GameHandler> gameHandler) {};
-private:
-
+	virtual std::string getName() { return "turn"; };
+protected:
+	std::shared_ptr<GameHandler> game = nullptr;
 };

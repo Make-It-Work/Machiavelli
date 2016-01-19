@@ -10,6 +10,7 @@
 #include "BuildingFactory.h"
 #include "RandomEngine.h"
 #include "TurnStartState.h"
+#include "DrawCharacterState.h"
 
 namespace machiavelli {
 	const int tcp_port{ 1080 };
@@ -246,16 +247,57 @@ void GameHandler::showHelp(std::shared_ptr<Socket> client) {
 	client->write("8 - Condotierre - Gebouw vernietigen en geld verdienen voor rode gebouwen \r\n");
 }
 
-std::shared_ptr<Player> GameHandler::startTurns() {
+bool GameHandler::startTurns() {
 	for each (const auto& kv in characters)
 	{
-		if (kv.second->getOwner() != stock && kv.first > turnID) {
+		if (kv.second->getOwner() != stock  && kv.first > turnID) {
 			turnID = kv.first;
-			turn = std::make_shared<TurnStartState>();
-			return kv.second->getOwner();
+			turn = std::make_shared<TurnStartState>(shared_from_this());
+			curPlayer = kv.second->getOwner();
+			return true;
 		}
 	}
-	return stock;
+	newRound();
+}
+
+bool GameHandler::nextTurn()
+{
+	if (turn->getName() == "drawing")
+	{
+		curPlayer = getNextPlayer(curPlayer);
+		changeTurnState(std::make_shared<DrawCharacterState>(shared_from_this()));
+		std::shared_ptr<DrawCharacterState> state = std::dynamic_pointer_cast<DrawCharacterState>(turn);
+		if (state != nullptr)
+		{
+			if (state->getCard() == -1)
+			{
+				startTurns();
+			}
+		}
+	}
+	return false;
+}
+
+void GameHandler::newRound()
+{
+	turnID = 0;
+
+	changeTurnState(std::make_shared<DrawCharacterState>(shared_from_this()));
+	if (characters[4]->getOwner() != stock && characters[4]->getOwner() != nullptr)
+	{
+		curPlayer = characters[4]->getOwner();
+	}
+	else {
+		curPlayer = getOldestPlayer();
+	}
+}
+
+void GameHandler::resetCharOwners()
+{
+	for each (const auto& kv in characters)
+	{
+		kv.second->setOwner(nullptr);
+	}
 }
 
 void GameHandler::printBuildings(std::shared_ptr<Player> player, bool built) {
@@ -268,7 +310,7 @@ void GameHandler::printBuildings(std::shared_ptr<Player> player, bool built) {
 
 void GameHandler::printTurn(std::shared_ptr<Player> player)
 {
-	turn->print(player, *characters[turnID]);
+	turn->print(player);
 }
 
 void GameHandler::handleCommand(ClientCommand command)

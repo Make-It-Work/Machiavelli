@@ -13,7 +13,7 @@ TurnBuildingActionState::~TurnBuildingActionState()
 {
 }
 
-void TurnBuildingActionState::print(std::shared_ptr<Player> player, const Character& chr)
+void TurnBuildingActionState::print(std::shared_ptr<Player> player)
 {
 	player->get_socket()->write("\r\n Kies een van de volgende bouwkaarten om te bouwen: \r\n");
 	buildingCards = game->buildingIdsForPlayer(player);

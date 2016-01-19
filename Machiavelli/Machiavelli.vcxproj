@@ -156,6 +156,7 @@
     <ClInclude Include="Condottiere.h" />
     <ClInclude Include="Dief.h" />
     <ClInclude Include="Drakenpoort.h" />
+    <ClInclude Include="DrawCharacterState.h" />
     <ClInclude Include="GameHandler.h" />
     <ClInclude Include="Gevangenis.h" />
     <ClInclude Include="Goldpiece.h" />
@@ -210,6 +211,7 @@
     <ClCompile Include="Condottiere.cpp" />
     <ClCompile Include="Dief.cpp" />
     <ClCompile Include="Drakenpoort.cpp" />
+    <ClCompile Include="DrawCharacterState.cpp" />
     <ClCompile Include="GameHandler.cpp" />
     <ClCompile Include="Gevangenis.cpp" />
     <ClCompile Include="Goldpiece.cpp" />
