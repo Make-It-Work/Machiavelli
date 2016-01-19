@@ -1,11 +1,11 @@
 #pragma once
-
 #include <iostream>
 #include <map>
 #include <vector>
 #include <functional>
 #include <memory>
 #include "Character.h"
+
 class CharacterFactory
 {
 public:

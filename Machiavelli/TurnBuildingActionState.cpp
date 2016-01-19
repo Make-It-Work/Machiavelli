@@ -20,7 +20,7 @@ void TurnBuildingActionState::print(std::shared_ptr<Player> player, const Charac
 	player->get_socket()->write("[0] - Niet bouwen \r\n");
 	for (int id : buildingCards)
 	{
-		player->get_socket()->write("[" + std::to_string(id) + "]" + game->getBuildingString(id) + "\r\n");
+			player->get_socket()->write("[" + std::to_string(id) + "]" + game->getBuildingString(id) + "\r\n");
 	}
 }
 

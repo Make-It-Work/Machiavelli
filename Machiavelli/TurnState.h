@@ -1,10 +1,11 @@
 #pragma once
 #include <memory>
-#include "Player.hpp"
-#include "ClientCommand.h"
-#include "Character.h"
-class GameHandler;
 
+#include "ClientCommand.h"
+
+class Player;
+class GameHandler;
+class Character;
 class TurnState
 {
 public:

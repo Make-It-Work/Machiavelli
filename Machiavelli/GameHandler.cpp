@@ -10,6 +10,8 @@
 #include "BuildingFactory.h"
 #include "RandomEngine.h"
 #include "TurnStartState.h"
+#include "Character.h"
+#include "Building.h"
 
 namespace machiavelli {
 	const int tcp_port{ 1080 };
@@ -251,7 +253,7 @@ std::shared_ptr<Player> GameHandler::startTurns() {
 	{
 		if (kv.second->getOwner() != nullptr && kv.first > turnID) {
 			turnID = kv.first;
-			turn = std::make_shared<TurnStartState>();
+			turn = std::make_shared<TurnStartState>(shared_from_this());
 			return kv.second->getOwner();
 		}
 	}
@@ -298,3 +300,16 @@ void GameHandler::assignBuilding(int id, std::shared_ptr<Player> player)
 {
 	buildings[id]->setOwner(player);
 }
+
+const Building& GameHandler::getBuilding(int id) {
+	return *buildings[id];
+}
+
+const Character& GameHandler::getCharacterRef(int id) {
+	return *characters[id];
+}
+
+std::string GameHandler::getBuildingString(int id) 
+{ 
+	return buildings[id]->getName() + "(" + std::to_string(buildings[id]->getPoints()) + "," + buildings[id]->getColor() + ")"; 
+};

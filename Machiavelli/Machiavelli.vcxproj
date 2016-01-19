@@ -158,7 +158,6 @@
     <ClInclude Include="Drakenpoort.h" />
     <ClInclude Include="GameHandler.h" />
     <ClInclude Include="Gevangenis.h" />
-    <ClInclude Include="Goldpiece.h" />
     <ClInclude Include="Handelshuis.h" />
     <ClInclude Include="Haven.h" />
     <ClInclude Include="HofDerWonderen.h" />
@@ -212,7 +211,6 @@
     <ClCompile Include="Drakenpoort.cpp" />
     <ClCompile Include="GameHandler.cpp" />
     <ClCompile Include="Gevangenis.cpp" />
-    <ClCompile Include="Goldpiece.cpp" />
     <ClCompile Include="Handelshuis.cpp" />
     <ClCompile Include="Haven.cpp" />
     <ClCompile Include="HofDerWonderen.cpp" />

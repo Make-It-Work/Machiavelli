@@ -4,10 +4,12 @@
 #include <map>
 #include "Socket.h"
 #include "Player.hpp"
-#include "Building.h"
-#include "Character.h"
-#include "Goldpiece.h"
 #include "TurnState.h"
+
+class Character;
+class Building;
+class Player;
+class TurnState;
 
 class GameHandler : public std::enable_shared_from_this<GameHandler>
 {
@@ -52,8 +54,10 @@ public:
 	void handleCommand(ClientCommand command);
 	void changeTurnState(std::shared_ptr<TurnState> state) { turn = state; };
 	std::vector<int> drawBuildingCards(int nCards);
-	std::string getBuildingString(int id) { return buildings[id]->getName() + "(" + std::to_string(buildings[id]->getPoints()) + "," + buildings[id]->getColor() + ")"; };
+	std::string getBuildingString(int id);
 	void assignBuilding(int id, std::shared_ptr<Player> player);
+
+	const Building & getBuilding(int id);
 
 	//Turn Actions
 	std::string buildBuilding(std::shared_ptr<Player>player, int buildingId);
@@ -71,6 +75,7 @@ public:
 	std::vector<int> buildingIdsForPlayer(std::shared_ptr<Player> player);
 	void showHelp(std::shared_ptr<Socket> client);
 	std::shared_ptr<Player> getStock() { return stock; };
+	const Character& getCharacterRef(int id);
 		
 };
 
