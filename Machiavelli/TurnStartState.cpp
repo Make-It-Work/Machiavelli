@@ -2,6 +2,7 @@
 #include "TurnStartState.h"
 #include "Character.h"
 #include "TurnBuildingCardState.h"
+#include "TurnBuildingActionState.h"
 //TurnStartState::TurnStartState(GameHandler& gh)
 TurnStartState::TurnStartState()
 {
@@ -40,7 +41,7 @@ void TurnStartState::handleCommand(ClientCommand command, std::shared_ptr<GameHa
 	case 1:
 		if (gameHandler->addGold(command.get_player(), 2))
 		{
-			//next turn
+			gameHandler->changeTurnState(std::make_shared<TurnBuildingActionState>(gameHandler));
 		}
 		else {
 			command.get_player()->get_socket()->write("Er is niet genoeg goud meer in het spel, selecteer een andere optie \r\n");

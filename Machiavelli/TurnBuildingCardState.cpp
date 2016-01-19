@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Character.h"
 #include "TurnBuildingCardState.h"
+#include "TurnBuildingActionState.h"
 #include "GameHandler.h"
 
 TurnBuildingCardState::TurnBuildingCardState(std::shared_ptr<GameHandler> gameHandler)
@@ -28,10 +29,16 @@ void TurnBuildingCardState::print(std::shared_ptr<Player> player, const Characte
 
 void TurnBuildingCardState::handleCommand(ClientCommand command, std::shared_ptr<GameHandler> gameHandler)
 {
-	if (!command.is_number()) command.get_player()->get_socket()->write("Input was not a number \r\n");
+	if (!command.is_number()) {
+		command.get_player()->get_socket()->write("Input was not a number \r\n");
+		return;
+	}
 	int i = stoi(command.get_cmd());
-	if(i > buildingCards.size()) command.get_player()->get_socket()->write("Number was too high \r\n");
+	if (i > buildingCards.size()) {
+		command.get_player()->get_socket()->write("Number was too high \r\n");
+		return;
+	}
 	int id = buildingCards[i];
 	gameHandler->assignBuilding(id, command.get_player());
-	//NAAR DE VOLGENDE STATE
+	gameHandler->changeTurnState(std::make_shared<TurnBuildingActionState>(gameHandler));
 }

@@ -97,6 +97,7 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 		std::shared_ptr<Player> player = theGame->addPlayer(client);
 
 		while (true) { // game loop
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 			try {
 				if (theGame->getAmountOfPlayers() == 2 && stateOfGame == "PlayersConnecting") {
 					stateOfGame = "CharacterCards";
@@ -110,7 +111,6 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 
 				}
 				if (stateOfGame == "CharacterCards") {
-					std::this_thread::sleep_for(std::chrono::milliseconds(10));
 					int cardId = RandomEngine::drawCharacterCard(theGame->characters);
 					if (cardId == -1) {
 						stateOfGame = "TurnState";

@@ -68,6 +68,7 @@ public:
 	std::shared_ptr<Player> getNextPlayer(std::shared_ptr<Player> currentPlayer);
 	void showGameStatus(std::shared_ptr<Socket> s);
 	std::string buildingsForPlayer(std::shared_ptr<Player> player);
+	std::vector<int> buildingIdsForPlayer(std::shared_ptr<Player> player);
 	void showHelp(std::shared_ptr<Socket> client);
 	std::shared_ptr<Player> getStock() { return stock; };
 		

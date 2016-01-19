@@ -164,6 +164,7 @@ std::string GameHandler::buildBuilding(std::shared_ptr<Player> player, int build
 			player->takeGold(buildings[buildingId]->getCost());
 			goldLeft += buildings[buildingId]->getCost();
 			buildings[buildingId]->setPlayed(true);
+			return "oke";
 		}
 		else {
 			return "No gold";
@@ -215,6 +216,17 @@ std::string GameHandler::buildingsForPlayer(std::shared_ptr<Player> player) {
 	}
 	s = std::to_string(counter) + s;
 	return s;
+}
+
+std::vector<int> GameHandler::buildingIdsForPlayer(std::shared_ptr<Player> player)
+{
+	std::vector<int> ids;
+	for (const auto& building : buildings) {
+		if (building.second->getOwner() == player) {
+			ids.push_back(building.first);
+		}
+	}
+	return ids;
 }
 
 void GameHandler::showHelp(std::shared_ptr<Socket> client) {
