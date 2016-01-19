@@ -106,12 +106,15 @@ void GameHandler::divideGold()
 	}
 }
 
-void GameHandler::addGold(std::shared_ptr<Player> playerm, int gold) {
-	if (goldLeft > gold)
+bool GameHandler::addGold(std::shared_ptr<Player> playerm, int gold) {
+	std::cout << "gl " << goldLeft << " - " << gold;
+	if (goldLeft >= gold)
 	{
 		playerm->addGold(gold);
 		goldLeft -= gold;
+		return true;
 	}
+	return false;
 }
 
 int GameHandler::amountOfGoldPieces(std::shared_ptr<Player> player) {
@@ -254,4 +257,32 @@ void GameHandler::printBuildings(std::shared_ptr<Player> player, bool built) {
 void GameHandler::printTurn(std::shared_ptr<Player> player)
 {
 	turn->print(player, *characters[turnID]);
+}
+
+void GameHandler::handleCommand(ClientCommand command)
+{
+	turn->handleCommand(command, shared_from_this());
+}
+
+std::vector<int> GameHandler::drawBuildingCards(int nCards)
+{
+	std::vector<int> available;
+	std::vector<int> ret;
+	for each (const auto& building in buildings) {
+		if (building.second->getOwner() == nullptr) {
+			available.push_back(building.first);
+		}
+	}
+
+	while (ret.size() < nCards)
+	{
+		int i = rand() % available.size() - 1;
+		ret.push_back(available[i]);
+	}
+	return ret;
+}
+
+void GameHandler::assignBuilding(int id, std::shared_ptr<Player> player)
+{
+	buildings[id]->setOwner(player);
 }

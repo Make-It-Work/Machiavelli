@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "TurnStartState.h"
 #include "Character.h"
-
+#include "TurnBuildingCardState.h"
 //TurnStartState::TurnStartState(GameHandler& gh)
 TurnStartState::TurnStartState()
 {
@@ -29,9 +29,31 @@ void TurnStartState::print(std::shared_ptr<Player> player, const Character& chr)
 	player->get_socket()->write("[3] Maak gebruik van de karaktereigenschap van de " + chr.getName() + " \r\n");
 }
 
-void TurnStartState::handleCommand(ClientCommand command)
+void TurnStartState::handleCommand(ClientCommand command, std::shared_ptr<GameHandler> gameHandler)
 {
-
+	if (!command.is_number()) command.get_player()->get_socket()->write("Input was not a number \r\n");
+	switch (std::stoi(command.get_cmd()))
+	{
+	case 0:
+		gameHandler->showGameStatus(command.get_player()->get_socket());
+		break;
+	case 1:
+		if (gameHandler->addGold(command.get_player(), 2))
+		{
+			//next turn
+		}
+		else {
+			command.get_player()->get_socket()->write("Er is niet genoeg goud meer in het spel, selecteer een andere optie \r\n");
+		}
+		break;
+	case 2:
+		command.get_player()->get_socket()->write("command 2");
+		gameHandler->changeTurnState(std::make_shared<TurnBuildingCardState>(gameHandler));
+		break;
+	case 3:
+		command.get_player()->get_socket()->write("command 3");
+		break;
+	}
 }
 
 //std::shared_ptr<TurnState> TurnStartState::nextState()

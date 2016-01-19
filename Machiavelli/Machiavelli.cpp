@@ -29,7 +29,7 @@ namespace machiavelli {
 bool turnfinished = true;
 
 static Sync_queue<ClientCommand> queue;
-GameHandler theGame;
+std::shared_ptr<GameHandler> theGame = std::make_shared<GameHandler>();
 std::string stateOfGame = "PlayersConnecting";
 std::shared_ptr<Player> currentPlayer = nullptr;
 
@@ -50,8 +50,8 @@ void consume_command() // runs in its own thread
 					std::string s_pickedCard = command.get_cmd();
 					if (std::stoi(s_pickedCard) != NULL) {
 						player->get_socket()->write("you picked " + s_pickedCard + "\r\n");
-						theGame.pickCharacterCard(std::stoi(s_pickedCard), player);
-						currentPlayer = theGame.getNextPlayer(player);
+						theGame->pickCharacterCard(std::stoi(s_pickedCard), player);
+						currentPlayer = theGame->getNextPlayer(player);
 					}
 					else {
 						player->get_socket()->write("Something went wrong, please pick one of the numbers: \r\n");
@@ -62,7 +62,7 @@ void consume_command() // runs in its own thread
 				{
 					if (player == currentPlayer)
 					{
-
+						theGame->handleCommand(command);
 					}
 				}
 				else {
@@ -94,35 +94,35 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 {
 	try {
 		client->write("Welcome to Server 1.0! To quit, type 'quit'.\r\n");
-		std::shared_ptr<Player> player = theGame.addPlayer(client);
+		std::shared_ptr<Player> player = theGame->addPlayer(client);
 
 		while (true) { // game loop
 			try {
-				if (theGame.getAmountOfPlayers() == 2 && stateOfGame == "PlayersConnecting") {
+				if (theGame->getAmountOfPlayers() == 2 && stateOfGame == "PlayersConnecting") {
 					stateOfGame = "CharacterCards";
 				}
-				if (currentPlayer == nullptr && theGame.getAmountOfPlayers() == 2) {
-					currentPlayer = theGame.getOldestPlayer();
-					theGame.divideGold();
-					theGame.divideBuilding();
+				if (currentPlayer == nullptr && theGame->getAmountOfPlayers() == 2) {
+					currentPlayer = theGame->getOldestPlayer();
+					theGame->divideGold();
+					theGame->divideBuilding();
 				} 
 				while (!turnfinished) {
 
 				}
 				if (stateOfGame == "CharacterCards") {
 					std::this_thread::sleep_for(std::chrono::milliseconds(10));
-					int cardId = RandomEngine::drawCharacterCard(theGame.characters);
+					int cardId = RandomEngine::drawCharacterCard(theGame->characters);
 					if (cardId == -1) {
 						stateOfGame = "TurnState";
-						currentPlayer = theGame.startTurns();
+						currentPlayer = theGame->startTurns();
 					}
 					else {
 						currentPlayer->get_socket()->write("De bovenste kaart was de " +
-							theGame.characters[cardId]->getName() +
+							theGame->characters[cardId]->getName() +
 							". Kies een van de onderstaande kaarten:"
 							);
-						theGame.layOffCharacterCard(cardId);
-						for (auto const& character : theGame.characters) {
+						theGame->layOffCharacterCard(cardId);
+						for (auto const& character : theGame->characters) {
 							if (character.second->getOwner() == nullptr) {
 								currentPlayer->get_socket()->write("\r\n");
 								currentPlayer->get_socket()->write(std::to_string(character.second->getId()));
@@ -135,9 +135,9 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 				if (stateOfGame == "TurnState")
 				{
 					cout << "Starting turn state";
-					if (currentPlayer == theGame.getStock())
+					if (currentPlayer == theGame->getStock())
 						continue;
-					theGame.printTurn(currentPlayer);
+					theGame->printTurn(currentPlayer);
 
 				}
 				
@@ -150,10 +150,10 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 					break; // out of game loop, will end this thread and close connection
 				}
 				else if (cmd == "status") {
-					theGame.showGameStatus(client);
+					theGame->showGameStatus(client);
 				}
 				else if (cmd == "help") {
-					theGame.showHelp(client);
+					theGame->showHelp(client);
 				}
 
 				ClientCommand command{ cmd, client, player };
