@@ -27,7 +27,7 @@ namespace machiavelli {
 }
 
 bool turnfinished = true;
-
+bool canPrint = true;
 static Sync_queue<ClientCommand> queue;
 std::shared_ptr<GameHandler> theGame = std::make_shared<GameHandler>();
 std::string stateOfGame = "PlayersConnecting";
@@ -42,8 +42,17 @@ void consume_command() // runs in its own thread
 			shared_ptr<Socket> client{ command.get_client() };
 			shared_ptr<Player> player{ command.get_player() };
 			try {
-				if(theGame->getCurPlayer() != theGame->getStock())
-					theGame->handleCommand(command);
+				if (theGame->getCurPlayer() != theGame->getStock())
+					if (theGame->getCurPlayer() == command.get_player())
+					{
+						theGame->handleCommand(command);
+						canPrint = true;
+					}
+					else
+					{
+						command.get_player()->get_socket()->write("It's not your turn \r\n");
+						canPrint = false;
+					}
 					// TODO handle command here
 					//*client << player->get_name() << ", you wrote: '" << command.get_cmd() << "', but I'll ignore that for now.\r\n" << machiavelli::prompt;
 				
@@ -73,7 +82,6 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 	try {
 		client->write("Welcome to Server 1.0! To quit, type 'quit'.\r\n");
 		std::shared_ptr<Player> player = theGame->addPlayer(client);
-
 		while (true) { // game loop
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 			try {
@@ -86,13 +94,14 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 					theGame->divideBuilding();
 					theGame->newRound();
 				} 
-
+				
 				currentPlayer = theGame->getCurPlayer();
 				cout << "Starting turn state";
-				if (currentPlayer != theGame->getStock() && currentPlayer != nullptr)
+				if (currentPlayer != theGame->getStock() && currentPlayer != nullptr && canPrint)
 				{
 					theGame->printTurn(currentPlayer);
 					currentPlayer->get_socket()->write(machiavelli::prompt);
+					canPrint = false;
 				}
 				
 				// read first line of request
@@ -112,7 +121,6 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 
 				ClientCommand command{ cmd, client, player };
 				queue.put(command);
-
 
 			}
 			catch (const exception& ex) {
