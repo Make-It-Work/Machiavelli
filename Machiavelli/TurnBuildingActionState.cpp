@@ -33,12 +33,12 @@ void TurnBuildingActionState::handleCommand(ClientCommand command, std::shared_p
 	int i = stoi(command.get_cmd());
 	if (i == 0) {
 		//game->changeTurnState(nextState());
-			game->nextTurn();
+		game->nextTurn();
 	}
 	else if (std::find(buildingCards.begin(), buildingCards.end(), i) != buildingCards.end())
 	{
 		if (game->buildBuilding(command.get_player(), i) == "oke") {
-			//game->changeTurnState(nextState());
+			game->nextTurn();
 		}
 	}
 	else

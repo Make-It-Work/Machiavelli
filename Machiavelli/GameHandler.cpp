@@ -275,6 +275,9 @@ bool GameHandler::nextTurn()
 			}
 		}
 	}
+	else {
+		startTurns();
+	}
 	return false;
 }
 
