@@ -3,10 +3,12 @@
 #include "Character.h"
 #include "TurnBuildingCardState.h"
 #include "TurnBuildingActionState.h"
-//TurnStartState::TurnStartState(GameHandler& gh)
+
 TurnStartState::TurnStartState(std::shared_ptr<GameHandler> gameHandler)
 {
 	game = gameHandler;
+	const Character& chr = gameHandler->getCharacterRef(gameHandler->getTurnID());
+	chr.getExtraGoldPieces(chr.getOwner(), gameHandler);
 }
 
 

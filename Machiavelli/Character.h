@@ -2,6 +2,9 @@
 #include <string>
 #include <memory>
 #include "Player.hpp"
+#include "GameHandler.h"
+
+class Building;
 class Character
 {
 protected:
@@ -17,6 +20,8 @@ public:
 	std::shared_ptr<Player> getOwner() const { return owner; }
 	std::string getName() const { return name; }
 	virtual void execute() = 0;
+	virtual void getExtraGoldPieces(std::shared_ptr<Player> player, std::shared_ptr<GameHandler> game) const = 0;
+	virtual std::string getActionDescription() const { return "Dit is een actie"; }
 };
 
 

@@ -84,9 +84,6 @@
     <ClInclude Include="RandomEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Goldpiece.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Building.h">
       <Filter>Header Files\Buildings</Filter>
     </ClInclude>
@@ -192,6 +189,9 @@
     <ClInclude Include="DrawCharacterState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TurnCharacterActionState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -240,9 +240,6 @@
       <Filter>Source Files\Characters</Filter>
     </ClCompile>
     <ClCompile Include="RandomEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Goldpiece.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BuildingFactory.cpp">
@@ -349,6 +346,9 @@
     </ClCompile>
     <ClCompile Include="DrawCharacterState.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TurnCharacterActionState.cpp">
+      <Filter>Source Files\Characters</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

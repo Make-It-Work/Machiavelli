@@ -12,6 +12,8 @@
 #include "TurnStartState.h"
 #include "DrawCharacterState.h"
 
+class Building;
+
 namespace machiavelli {
 	const int tcp_port{ 1080 };
 	const std::string prompt{ "machiavelli> " };
@@ -353,6 +355,7 @@ void GameHandler::assignBuilding(int id, std::shared_ptr<Player> player)
 	buildings[id]->setOwner(player);
 }
 
+
 void GameHandler::checkLastRound()
 {
 	for (std::shared_ptr<Player> player : players)
@@ -425,8 +428,28 @@ void GameHandler::endGame()
 		for (std::shared_ptr<Player> player : players)
 		{
 			player->get_socket()->write("=========GAME ENDED=========\r\n");
-			if(foundHighestScore)
+			if (foundHighestScore)
 				player->get_socket()->write("The winner of the game is.. " + bestScoring->get_name() + " with a score of " + std::to_string(bestScoring->getPoints()) + " points!");
 		}
 	}
+
+}
+
+const Building& GameHandler::getBuilding(int id) {
+	return *buildings[id];
+}
+
+const Character& GameHandler::getCharacterRef(int id) {
+	return *characters[id];
+}
+
+std::string GameHandler::getBuildingString(int id) 
+{ 
+	return buildings[id]->getName() + "(" + std::to_string(buildings[id]->getPoints()) + "," + buildings[id]->getColor() + ")"; 
+};
+
+std::shared_ptr<Player> GameHandler::owner(int cardId) 
+{
+	return characters[cardId]->getOwner(); 
+
 }

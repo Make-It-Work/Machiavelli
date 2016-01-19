@@ -159,7 +159,6 @@
     <ClInclude Include="DrawCharacterState.h" />
     <ClInclude Include="GameHandler.h" />
     <ClInclude Include="Gevangenis.h" />
-    <ClInclude Include="Goldpiece.h" />
     <ClInclude Include="Handelshuis.h" />
     <ClInclude Include="Haven.h" />
     <ClInclude Include="HofDerWonderen.h" />
@@ -193,6 +192,7 @@
     <ClInclude Include="Toernooiveld.h" />
     <ClInclude Include="TurnBuildingActionState.h" />
     <ClInclude Include="TurnBuildingCardState.h" />
+    <ClInclude Include="TurnCharacterActionState.h" />
     <ClInclude Include="TurnStartState.h" />
     <ClInclude Include="TurnState.h" />
     <ClInclude Include="Universiteit.h" />
@@ -214,7 +214,6 @@
     <ClCompile Include="DrawCharacterState.cpp" />
     <ClCompile Include="GameHandler.cpp" />
     <ClCompile Include="Gevangenis.cpp" />
-    <ClCompile Include="Goldpiece.cpp" />
     <ClCompile Include="Handelshuis.cpp" />
     <ClCompile Include="Haven.cpp" />
     <ClCompile Include="HofDerWonderen.cpp" />
@@ -252,6 +251,7 @@
     <ClCompile Include="Toernooiveld.cpp" />
     <ClCompile Include="TurnBuildingActionState.cpp" />
     <ClCompile Include="TurnBuildingCardState.cpp" />
+    <ClCompile Include="TurnCharacterActionState.cpp" />
     <ClCompile Include="TurnStartState.cpp" />
     <ClCompile Include="TurnState.cpp" />
     <ClCompile Include="Universiteit.cpp" />
