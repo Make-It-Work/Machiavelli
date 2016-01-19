@@ -21,6 +21,7 @@ public:
 	std::string getName() const { return name; }
 	virtual void execute() = 0;
 	virtual void getExtraGoldPieces(std::shared_ptr<Player> player, std::shared_ptr<GameHandler> game) const = 0;
+	virtual std::string getActionDescription() const { return "Dit is een actie"; }
 };
 
 

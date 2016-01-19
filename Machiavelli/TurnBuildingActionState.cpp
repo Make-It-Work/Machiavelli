@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "TurnBuildingActionState.h"
+#include "TurnCharacterActionState.h"
 #include "TurnStartState.h"
 #include "GameHandler.h"
 
@@ -32,13 +33,13 @@ void TurnBuildingActionState::handleCommand(ClientCommand command, std::shared_p
 	} 
 	int i = stoi(command.get_cmd());
 	if (i == 0) {
-		//game->changeTurnState(nextState());
-		game->nextTurn();
+		game->changeTurnState(nextState());
+		
 	}
 	else if (std::find(buildingCards.begin(), buildingCards.end(), i) != buildingCards.end())
 	{
 		if (game->buildBuilding(command.get_player(), i) == "oke") {
-			game->nextTurn();
+			game->changeTurnState(nextState());
 		}
 	}
 	else
@@ -48,6 +49,6 @@ void TurnBuildingActionState::handleCommand(ClientCommand command, std::shared_p
 }
 
 std::shared_ptr<TurnState> TurnBuildingActionState::nextState() {
-	return std::make_shared<TurnBuildingActionState>(game);
+	return std::make_shared<TurnCharacterActionState>(game);
 }
 
