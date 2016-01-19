@@ -283,8 +283,8 @@ bool GameHandler::nextTurn()
 
 void GameHandler::newRound()
 {
+	resetCharOwners();
 	turnID = 0;
-
 	changeTurnState(std::make_shared<DrawCharacterState>(shared_from_this()));
 	if (characters[4]->getOwner() != stock && characters[4]->getOwner() != nullptr)
 	{
@@ -293,6 +293,7 @@ void GameHandler::newRound()
 	else {
 		curPlayer = getOldestPlayer();
 	}
+
 }
 
 void GameHandler::resetCharOwners()

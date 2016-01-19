@@ -8,7 +8,7 @@ DrawCharacterState::DrawCharacterState(std::shared_ptr<GameHandler> gameHandler)
 	game = gameHandler;
 	cardId = RandomEngine::drawCharacterCard(gameHandler->characters);
 	if (cardId != -1) {
-		gameHandler->layOffCharacterCard(cardId);
+		game->layOffCharacterCard(cardId);
 	}
 }
 
@@ -26,7 +26,7 @@ void DrawCharacterState::print(std::shared_ptr<Player> player)
 		);
 	for each (const auto& kv in game->characters)
 	{
-		if (kv.second->getOwner() == nullptr) {
+		if (kv.second->getOwner() == nullptr && kv.second->getOwner() != game->getStock()) {
 			player->get_socket()->write(std::to_string(kv.second->getId()));
 			player->get_socket()->write(" " + kv.second->getName() + "\r\n");
 		}
