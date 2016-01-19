@@ -249,7 +249,7 @@ void GameHandler::showHelp(std::shared_ptr<Socket> client) {
 std::shared_ptr<Player> GameHandler::startTurns() {
 	for each (const auto& kv in characters)
 	{
-		if (kv.second->getOwner() != nullptr && kv.first > turnID) {
+		if (kv.second->getOwner() != stock && kv.first > turnID) {
 			turnID = kv.first;
 			turn = std::make_shared<TurnStartState>();
 			return kv.second->getOwner();

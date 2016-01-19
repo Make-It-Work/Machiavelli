@@ -47,6 +47,7 @@ public:
 	//turn functions
 	void printTurn(std::shared_ptr<Player> player);
 	std::shared_ptr<Player> startTurns();
+	std::shared_ptr<Player> nextTurn() { return startTurns(); };
 	int getTurnID() { return turnID; };
 	void printBuildings(std::shared_ptr<Player> player, bool built);
 	void handleCommand(ClientCommand command);
@@ -71,6 +72,5 @@ public:
 	std::vector<int> buildingIdsForPlayer(std::shared_ptr<Player> player);
 	void showHelp(std::shared_ptr<Socket> client);
 	std::shared_ptr<Player> getStock() { return stock; };
-		
+	std::shared_ptr<Player> owner(int cardId) { return characters[cardId]->getOwner(); };
 };
-

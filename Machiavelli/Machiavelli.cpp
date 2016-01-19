@@ -37,6 +37,7 @@ void consume_command() // runs in its own thread
 {
 	try {
 		while (true) {
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
 			ClientCommand command{ queue.get() }; // will block here unless there are still command objects in the queue
 			shared_ptr<Socket> client{ command.get_client() };
 			shared_ptr<Player> player{ command.get_player() };
@@ -114,7 +115,8 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 					int cardId = RandomEngine::drawCharacterCard(theGame->characters);
 					if (cardId == -1) {
 						stateOfGame = "TurnState";
-						currentPlayer = theGame->startTurns();
+						theGame->startTurns();
+						currentPlayer = theGame->owner(theGame->getTurnID());
 					}
 					else {
 						currentPlayer->get_socket()->write("De bovenste kaart was de " +
@@ -134,6 +136,7 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 				}
 				if (stateOfGame == "TurnState")
 				{
+					currentPlayer = theGame->owner(theGame->getTurnID());
 					cout << "Starting turn state";
 					if (currentPlayer == theGame->getStock())
 						continue;
