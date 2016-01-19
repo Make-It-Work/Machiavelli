@@ -13,7 +13,7 @@ TurnBuildingActionState::~TurnBuildingActionState()
 {
 }
 
-void TurnBuildingActionState::print(std::shared_ptr<Player> player, const Character& chr)
+void TurnBuildingActionState::print(std::shared_ptr<Player> player)
 {
 	player->get_socket()->write("\r\n Kies een van de volgende bouwkaarten om te bouwen: \r\n");
 	buildingCards = game->buildingIdsForPlayer(player);
@@ -32,12 +32,13 @@ void TurnBuildingActionState::handleCommand(ClientCommand command, std::shared_p
 	} 
 	int i = stoi(command.get_cmd());
 	if (i == 0) {
-		game->changeTurnState(nextState());
+		//game->changeTurnState(nextState());
+		game->nextTurn();
 	}
 	else if (std::find(buildingCards.begin(), buildingCards.end(), i) != buildingCards.end())
 	{
 		if (game->buildBuilding(command.get_player(), i) == "oke") {
-			game->changeTurnState(nextState());
+			game->nextTurn();
 		}
 	}
 	else

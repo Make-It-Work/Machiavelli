@@ -16,7 +16,7 @@ TurnBuildingCardState::~TurnBuildingCardState()
 
 }
 
-void TurnBuildingCardState::print(std::shared_ptr<Player> player, const Character& chr)
+void TurnBuildingCardState::print(std::shared_ptr<Player> player)
 {
 
 	player->get_socket()->write("\r\nKies een van de volgende bouwkaarten: \r\n");

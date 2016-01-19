@@ -186,6 +186,9 @@
     <ClInclude Include="TurnBuildingActionState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DrawCharacterState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -336,6 +339,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TurnBuildingActionState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawCharacterState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

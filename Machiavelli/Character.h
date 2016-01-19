@@ -20,7 +20,7 @@ public:
 	std::shared_ptr<Player> getOwner() const { return owner; }
 	std::string getName() const { return name; }
 	virtual void execute() = 0;
-	//virtual void getExtraGoldPieces(std::shared_ptr<Player> player, std::shared_ptr<GameHandler> game) const = 0;
+	virtual void getExtraGoldPieces(std::shared_ptr<Player> player, std::shared_ptr<GameHandler> game) const = 0;
 };
 
 

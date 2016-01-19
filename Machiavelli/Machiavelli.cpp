@@ -27,7 +27,7 @@ namespace machiavelli {
 }
 
 bool turnfinished = true;
-
+bool canPrint = true;
 static Sync_queue<ClientCommand> queue;
 std::shared_ptr<GameHandler> theGame = std::make_shared<GameHandler>();
 std::string stateOfGame = "PlayersConnecting";
@@ -37,38 +37,25 @@ void consume_command() // runs in its own thread
 {
 	try {
 		while (true) {
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
 			ClientCommand command{ queue.get() }; // will block here unless there are still command objects in the queue
 			shared_ptr<Socket> client{ command.get_client() };
 			shared_ptr<Player> player{ command.get_player() };
 			try {
-				while (!turnfinished) {
-
-				}
-				turnfinished = false;
-				if (stateOfGame == "CharacterCards") {
-
-					std::string s_pickedCard = command.get_cmd();
-					if (std::stoi(s_pickedCard) != NULL) {
-						player->get_socket()->write("you picked " + s_pickedCard + "\r\n");
-						theGame->pickCharacterCard(std::stoi(s_pickedCard), player);
-						currentPlayer = theGame->getNextPlayer(player);
-					}
-					else {
-						player->get_socket()->write("Something went wrong, please pick one of the numbers: \r\n");
-						player->get_socket()->write(machiavelli::prompt);
-					}
-				}
-				else if (stateOfGame == "TurnState")
-				{
-					if (player == currentPlayer)
+				if (theGame->getCurPlayer() != theGame->getStock())
+					if (theGame->getCurPlayer() == command.get_player())
 					{
 						theGame->handleCommand(command);
+						canPrint = true;
 					}
-				}
-				else {
+					else
+					{
+						command.get_player()->get_socket()->write("It's not your turn \r\n");
+						canPrint = false;
+					}
 					// TODO handle command here
-					*client << player->get_name() << ", you wrote: '" << command.get_cmd() << "', but I'll ignore that for now.\r\n" << machiavelli::prompt;
-				}
+					//*client << player->get_name() << ", you wrote: '" << command.get_cmd() << "', but I'll ignore that for now.\r\n" << machiavelli::prompt;
+				
 			}
 			catch (const exception& ex) {
 				cerr << "*** exception in consumer thread for player " << player->get_name() << ": " << ex.what() << '\n';
@@ -95,7 +82,6 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 	try {
 		client->write("Welcome to Server 1.0! To quit, type 'quit'.\r\n");
 		std::shared_ptr<Player> player = theGame->addPlayer(client);
-
 		while (true) { // game loop
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 			try {
@@ -106,39 +92,16 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 					currentPlayer = theGame->getOldestPlayer();
 					theGame->divideGold();
 					theGame->divideBuilding();
+					theGame->newRound();
 				} 
-				while (!turnfinished) {
-
-				}
-				if (stateOfGame == "CharacterCards") {
-					int cardId = RandomEngine::drawCharacterCard(theGame->characters);
-					if (cardId == -1) {
-						stateOfGame = "TurnState";
-						currentPlayer = theGame->startTurns();
-					}
-					else {
-						currentPlayer->get_socket()->write("De bovenste kaart was de " +
-							theGame->characters[cardId]->getName() +
-							". Kies een van de onderstaande kaarten:"
-							);
-						theGame->layOffCharacterCard(cardId);
-						for (auto const& character : theGame->characters) {
-							if (character.second->getOwner() == nullptr) {
-								currentPlayer->get_socket()->write("\r\n");
-								currentPlayer->get_socket()->write(std::to_string(character.second->getId()));
-								currentPlayer->get_socket()->write(" " + character.second->getName());
-							}
-						}
-						currentPlayer->get_socket()->write("\r\n" + machiavelli::prompt);
-					}
-				}
-				if (stateOfGame == "TurnState")
+				
+				currentPlayer = theGame->getCurPlayer();
+				cout << "Starting turn state";
+				if (currentPlayer != theGame->getStock() && currentPlayer != nullptr && canPrint)
 				{
-					cout << "Starting turn state";
-					if (currentPlayer == theGame->getStock())
-						continue;
 					theGame->printTurn(currentPlayer);
-
+					currentPlayer->get_socket()->write(machiavelli::prompt);
+					canPrint = false;
 				}
 				
 				// read first line of request
@@ -158,7 +121,6 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 
 				ClientCommand command{ cmd, client, player };
 				queue.put(command);
-
 
 			}
 			catch (const exception& ex) {

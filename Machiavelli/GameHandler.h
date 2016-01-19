@@ -20,11 +20,13 @@ private:
 	std::map<int, std::unique_ptr<Building>> buildings;
 
 	std::shared_ptr<TurnState> turn = nullptr;
+	std::shared_ptr<Player> curPlayer = stock;
 
 	int goldLeft = 32;
 	
 	void initCharacterCards();
 	void initBuildingCards();
+	void resetCharOwners();
 	
 	//turn data
 	int turnID = -1;
@@ -46,9 +48,11 @@ public:
 
 	void getBuilding(std::shared_ptr<Player> player);
 
+	void newRound();
 	//turn functions
 	void printTurn(std::shared_ptr<Player> player);
-	std::shared_ptr<Player> startTurns();
+	bool startTurns();
+	bool nextTurn();
 	int getTurnID() { return turnID; };
 	void printBuildings(std::shared_ptr<Player> player, bool built);
 	void handleCommand(ClientCommand command);
@@ -56,6 +60,7 @@ public:
 	std::vector<int> drawBuildingCards(int nCards);
 	std::string getBuildingString(int id);
 	void assignBuilding(int id, std::shared_ptr<Player> player);
+	std::shared_ptr<Player> getCurPlayer() { return curPlayer; };
 
 	const Building & getBuilding(int id);
 
@@ -76,6 +81,5 @@ public:
 	void showHelp(std::shared_ptr<Socket> client);
 	std::shared_ptr<Player> getStock() { return stock; };
 	const Character& getCharacterRef(int id);
-		
+	std::shared_ptr<Player> owner(int cardId);
 };
-
