@@ -30,7 +30,7 @@ bool Moordenaar::execute(ClientCommand command, std::shared_ptr<GameHandler> gam
 	}
 }
 
-std::string Moordenaar::getActionDescription() const
+std::string Moordenaar::getActionDescription(std::shared_ptr<GameHandler> game) const
 {
 	std::string s = "Kies een karakter om te vermoorden: \r\n";
 	s += "[2] Dief \r\n";
@@ -42,3 +42,4 @@ std::string Moordenaar::getActionDescription() const
 	s += "[8] Condottiere \r\n";
 	return s;
 }
+
