@@ -11,6 +11,7 @@
 #include "RandomEngine.h"
 #include "TurnStartState.h"
 #include "DrawCharacterState.h"
+#include "CharacterHandler.h"
 
 class Building;
 
@@ -23,7 +24,8 @@ GameHandler::GameHandler()
 {
 	stock = std::make_shared<Player>();
 	stock->set_name("stock");
-	initCharacterCards();
+	characterHandler = std::make_unique<CharacterHandler>(stock);
+
 	initBuildingCards();
 }
 
@@ -59,26 +61,6 @@ std::shared_ptr<Player> GameHandler::getOldestPlayer() {
 		}
 	}
 	return firstplayer;
-}
-
-void GameHandler::initCharacterCards() {
-	std::unique_ptr<CharacterFactory> charF = std::unique_ptr<CharacterFactory>(new CharacterFactory);
-	const std::string textfile{ "karakterkaarten.csv" };
-	std::ifstream input_file{ textfile }; // stack-based file object; deze constructie opent de file voor lezen
-	std::string line;
-
-	// getline() leest een regel die eindigt in een \n
-	// (je kunt ook een 3e param meegeven als je een ander 'regeleinde' wil gebruiken)
-	while (std::getline(input_file, line)) { // getline() geeft false zodra end-of-file is bereikt
-		
-		std::istringstream buf(line);
-		std::istream_iterator <std::string> beg(buf), end;
-		std::vector<std::string> line(beg, end);
-		for each(std::string s in line) {
-			std::unique_ptr<Character> c = charF->createCharacter(s);
-			characters.emplace(c->getId(), std::move(c));
-		}
-	}
 }
 
 void GameHandler::initBuildingCards() {
@@ -136,28 +118,6 @@ void GameHandler::divideBuilding() {
 void GameHandler::getBuilding(std::shared_ptr<Player> player) {
 	int cardId = RandomEngine::drawBuildingCard(buildings);
 	buildings[cardId]->setOwner(player);
-}
-
-void GameHandler::layOffCharacterCard(int cardId) {
-	if (amountOfCharactersLeft() % 2 == 0) {
-		characters[cardId]->setOwner(stock);
-	}
-}
-
-int GameHandler::amountOfCharactersLeft() {
-	int counter = 0;
-	for each (const auto& kv in characters)
-	{
-		if (kv.second->getOwner() == nullptr) {
-			counter++;
-		}
-	}
-	return counter;
-	
-}
-
-void GameHandler::pickCharacterCard(int cardId, std::shared_ptr<Player> player) {
-	characters[cardId]->setOwner(player);
 }
 
 std::string GameHandler::buildBuilding(std::shared_ptr<Player> player, int buildingId)
@@ -250,9 +210,10 @@ void GameHandler::showHelp(std::shared_ptr<Socket> client) {
 }
 
 bool GameHandler::startTurns() {
-	if(!lastRound)
+	if (!lastRound) {
 		checkLastRound();
-	for each (const auto& kv in characters)
+	}
+	for each (const auto& kv in characterHandler->getCharacters())
 	{
 		if (kv.second->getOwner() != stock  && kv.first > turnID) {
 			turnID = kv.first;
@@ -293,22 +254,21 @@ bool GameHandler::nextTurn()
 
 void GameHandler::newRound()
 {
-	resetCharOwners();
-	turnID = 0;
-	changeTurnState(std::make_shared<DrawCharacterState>(shared_from_this()));
-	if (characters[4]->getOwner() != stock && characters[4]->getOwner() != nullptr)
+	if (characterHandler->getCharacterRef(4).getOwner() != stock && characterHandler->getCharacterRef(4).getOwner() != nullptr)
 	{
-		curPlayer = characters[4]->getOwner();
+		curPlayer = characterHandler->getCharacterRef(4).getOwner();
 	}
 	else {
 		curPlayer = getOldestPlayer();
 	}
-
+	resetCharOwners();
+	turnID = 0;
+	changeTurnState(std::make_shared<DrawCharacterState>(shared_from_this()));
 }
 
 void GameHandler::resetCharOwners()
 {
-	for each (const auto& kv in characters)
+	for each (const auto& kv in characterHandler->getCharacters())
 	{
 		kv.second->setOwner(nullptr);
 	}
@@ -439,17 +399,7 @@ const Building& GameHandler::getBuilding(int id) {
 	return *buildings[id];
 }
 
-const Character& GameHandler::getCharacterRef(int id) {
-	return *characters[id];
-}
-
 std::string GameHandler::getBuildingString(int id) 
 { 
 	return buildings[id]->getName() + "(" + std::to_string(buildings[id]->getPoints()) + "," + buildings[id]->getColor() + ")"; 
 };
-
-std::shared_ptr<Player> GameHandler::owner(int cardId) 
-{
-	return characters[cardId]->getOwner(); 
-
-}

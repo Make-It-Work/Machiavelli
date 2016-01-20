@@ -2,7 +2,7 @@
 #include "TurnCharacterActionState.h"
 #include "GameHandler.h"
 #include "Character.h"
-
+#include "CharacterHandler.h"
 TurnCharacterActionState::TurnCharacterActionState(std::shared_ptr<GameHandler> gh)
 {
 	game = gh;
@@ -14,7 +14,7 @@ TurnCharacterActionState::~TurnCharacterActionState()
 
 void TurnCharacterActionState::print(std::shared_ptr<Player> player)
 {
-	const Character& chr = game->getCharacterRef(game->getTurnID());
+	const Character& chr = game->getCharacterHandler().getCharacterRef(game->getTurnID());
 	player->get_socket()->write("\r\n Omdat je de " + chr.getName() + " bent, mag je: \r\n");
 	player->get_socket()->write(chr.getActionDescription() + "\r\n");
 }
@@ -22,7 +22,7 @@ void TurnCharacterActionState::print(std::shared_ptr<Player> player)
 void TurnCharacterActionState::handleCommand(ClientCommand command, std::shared_ptr<GameHandler> gameHandler)
 {
 	gameHandler->getCurPlayer()->get_socket()->write("Executed action \r\n");
-	const Character& chr = game->getCharacterRef(game->getTurnID());
+	const Character& chr = game->getCharacterHandler().getCharacterRef(game->getTurnID());
 	chr.execute(gameHandler);
 	game->nextTurn();
 }

@@ -152,6 +152,7 @@
     <ClInclude Include="Burcht.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="CharacterFactory.h" />
+    <ClInclude Include="CharacterHandler.h" />
     <ClInclude Include="ClientCommand.h" />
     <ClInclude Include="Condottiere.h" />
     <ClInclude Include="Dief.h" />
@@ -208,6 +209,7 @@
     <ClCompile Include="Burcht.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CharacterFactory.cpp" />
+    <ClCompile Include="CharacterHandler.cpp" />
     <ClCompile Include="Condottiere.cpp" />
     <ClCompile Include="Dief.cpp" />
     <ClCompile Include="Drakenpoort.cpp" />

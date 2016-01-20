@@ -10,12 +10,13 @@ class Character;
 class Building;
 class Player;
 class TurnState;
+class CharacterHandler;
 
 class GameHandler : public std::enable_shared_from_this<GameHandler>
 {
 private:
+	std::unique_ptr<CharacterHandler> characterHandler;
 	std::vector<std::shared_ptr<Player>> players;
-	std::map<int, std::unique_ptr<Character>> leftOverCharacters;
 	std::shared_ptr<Player> stock;
 	std::map<int, std::unique_ptr<Building>> buildings;
 
@@ -25,7 +26,6 @@ private:
 	int goldLeft = 32;
 	
 	//game start
-	void initCharacterCards();
 	void initBuildingCards();
 	void resetCharOwners();
 
@@ -42,8 +42,11 @@ private:
 public:
 	GameHandler();
 	~GameHandler();
+
+	CharacterHandler& getCharacterHandler() { return *characterHandler; }
+
 	int getAmountOfPlayers() { return players.size(); }
-	std::map<int, std::unique_ptr<Character>> characters;
+	//std::map<int, std::unique_ptr<Character>> characters;
 
 	//Init functions
 	std::shared_ptr<Player> getOldestPlayer();
@@ -76,12 +79,6 @@ public:
 	//Turn Actions
 	std::string buildBuilding(std::shared_ptr<Player>player, int buildingId);
 
-	//CharacterCard functions
-	int amountOfCharactersLeft();
-	void layOffCharacterCard(int cardId);
-	void pickCharacterCard(int cardId, std::shared_ptr<Player> player);
-	Character& getCharacter(int cardId) { return *characters[cardId].get(); };
-
 	//Helper functions
 	std::shared_ptr<Player> getNextPlayer(std::shared_ptr<Player> currentPlayer);
 	void showGameStatus(std::shared_ptr<Socket> s);
@@ -89,6 +86,4 @@ public:
 	std::vector<int> buildingIdsForPlayer(std::shared_ptr<Player> player);
 	void showHelp(std::shared_ptr<Socket> client);
 	std::shared_ptr<Player> getStock() { return stock; };
-	const Character& getCharacterRef(int id);
-	std::shared_ptr<Player> owner(int cardId);
 };

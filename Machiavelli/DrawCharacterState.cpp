@@ -2,13 +2,14 @@
 #include "DrawCharacterState.h"
 #include "GameHandler.h"
 #include "RandomEngine.h"
+#include "CharacterHandler.h"
 
 DrawCharacterState::DrawCharacterState(std::shared_ptr<GameHandler> gameHandler)
 {
 	game = gameHandler;
-	cardId = RandomEngine::drawCharacterCard(gameHandler->characters);
+	cardId = RandomEngine::drawCharacterCard(gameHandler->getCharacterHandler().getCharacters());
 	if (cardId != -1) {
-		game->layOffCharacterCard(cardId);
+		game->getCharacterHandler().layOffCharacterCard(cardId);
 	}
 }
 
@@ -21,10 +22,10 @@ DrawCharacterState::~DrawCharacterState()
 void DrawCharacterState::print(std::shared_ptr<Player> player)
 {
 	player->get_socket()->write("De bovenste kaart was de " +
-		game->characters[cardId]->getName() +
+		game->getCharacterHandler().getCharacterRef(cardId).getName() +
 		". Kies een van de onderstaande kaarten:\r\n"
 		);
-	for each (const auto& kv in game->characters)
+	for each (const auto& kv in game->getCharacterHandler().getCharacters())
 	{
 		if (kv.second->getOwner() == nullptr && kv.second->getOwner() != game->getStock()) {
 			player->get_socket()->write(std::to_string(kv.second->getId()));
@@ -38,7 +39,7 @@ void DrawCharacterState::handleCommand(ClientCommand command, std::shared_ptr<Ga
 	std::string s_pickedCard = command.get_cmd();
 	if (std::stoi(s_pickedCard) != NULL) {
 		command.get_player()->get_socket()->write("you picked " + s_pickedCard + "\r\n");
-		game->pickCharacterCard(std::stoi(s_pickedCard), command.get_player());
+		game->getCharacterHandler().pickCharacterCard(std::stoi(s_pickedCard), command.get_player());
 		game->nextTurn();
 	}
 	else {
