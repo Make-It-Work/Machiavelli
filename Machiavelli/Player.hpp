@@ -31,6 +31,9 @@ public:
 
 	void addPoints(int nPoints) { score += nPoints; };
 	int getPoints() { return score; };
+
+	void addBuildingPoints(int nPoints) { buildingScore += nPoints; };
+	int getBuildingPoints() { return buildingScore; };
 private:
 	std::string name;
 	int age;
@@ -38,6 +41,7 @@ private:
 	int gold = 0;
 
 	int score = 0;
+	int buildingScore= 0;
 };
 
 #endif /* Player_hpp */

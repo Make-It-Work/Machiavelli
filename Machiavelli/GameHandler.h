@@ -36,6 +36,7 @@ private:
 	void determineScore();
 	std::shared_ptr<Player> firstFinish = nullptr;
 	void endGame();
+	bool gameEnded = false;
 
 	//turn data
 	int turnID = -1;

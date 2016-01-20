@@ -97,11 +97,15 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 				
 				currentPlayer = theGame->getCurPlayer();
 				cout << "Starting turn state";
-				if (currentPlayer != theGame->getStock() && currentPlayer != nullptr && canPrint)
+				if (currentPlayer != theGame->getStock() && currentPlayer != nullptr)
 				{
-					theGame->printTurn(currentPlayer);
-					currentPlayer->get_socket()->write(machiavelli::prompt);
-					canPrint = false;
+					while (canPrint)
+					{
+						currentPlayer->get_socket()->write("\r\n==========================================\r\n");
+						theGame->printTurn(currentPlayer);
+						currentPlayer->get_socket()->write(machiavelli::prompt);
+						canPrint = false;
+					}
 				}
 				
 				// read first line of request
