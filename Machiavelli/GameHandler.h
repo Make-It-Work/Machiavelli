@@ -76,6 +76,7 @@ public:
 
 	//Turn Actions
 	std::string buildBuilding(std::shared_ptr<Player>player, int buildingId);
+	bool removeBuilding(int id, std::shared_ptr<Player> demolisher);
 
 	//CharacterCard functions
 	int amountOfCharactersLeft();

@@ -348,7 +348,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TurnCharacterActionState.cpp">
-      <Filter>Source Files\Characters</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

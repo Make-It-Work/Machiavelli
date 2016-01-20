@@ -489,3 +489,12 @@ void GameHandler::stealCharacter(int id, std::shared_ptr<Player> player)
 {
 	characters[id]->setStolen(player);
 }
+
+bool GameHandler::removeBuilding(int id, std::shared_ptr<Player> demolisher)
+{
+	if (buildings[id]->getCost() - 1 > demolisher->getGold()) return false;
+	buildings[id]->setPlayed(false);
+	buildings[id]->setOwner(nullptr);
+	demolisher->takeGold(buildings[id]->getCost() - 1);
+	return true;
+}
