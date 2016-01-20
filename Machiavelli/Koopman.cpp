@@ -15,9 +15,10 @@ Koopman::~Koopman()
 {
 }
 
-void Koopman::execute(std::shared_ptr<GameHandler> game) const
+bool Koopman::execute(ClientCommand command, std::shared_ptr<GameHandler> game) const
 {
 	game->addGold(game->getCurPlayer(), 1);
+	return true;
 }
 
 void Koopman::getExtraGoldPieces(std::shared_ptr<Player> player, std::shared_ptr<GameHandler> game) const
