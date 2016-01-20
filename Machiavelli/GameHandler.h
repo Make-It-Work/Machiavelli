@@ -94,7 +94,10 @@ public:
 	const Character& getCharacterRef(int id);
 	std::shared_ptr<Player> owner(int cardId);
 
+	int buildingFromStock();
+
 	//Character Actions
 	void killCharacter(int id);
 	void stealCharacter(int id, std::shared_ptr<Player> player);
+	void changeBuildingOwner(int id, std::shared_ptr<Player> newOwner);
 };
