@@ -32,6 +32,7 @@ static Sync_queue<ClientCommand> queue;
 std::shared_ptr<GameHandler> theGame = std::make_shared<GameHandler>();
 std::string stateOfGame = "PlayersConnecting";
 std::shared_ptr<Player> currentPlayer = nullptr;
+std::string chat("chat");
 
 void consume_command() // runs in its own thread
 {
@@ -43,7 +44,10 @@ void consume_command() // runs in its own thread
 			shared_ptr<Player> player{ command.get_player() };
 			try {
 				if (theGame->getCurPlayer() != theGame->getStock())
-					if (theGame->getCurPlayer() == command.get_player())
+					if (command.get_cmd().compare(0, chat.length(), chat) == 0)
+					{
+						theGame->getNextPlayer(command.get_player())->get_socket()->write(command.get_player()->get_name() +  ": " + command.get_cmd().erase(0, chat.length()) + "\r\n");
+					}else if (theGame->getCurPlayer() == command.get_player())
 					{
 						theGame->handleCommand(command);
 						canPrint = true;
@@ -121,7 +125,7 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 				}
 				else if (cmd == "help") {
 					theGame->showHelp(client);
-				}
+				} 
 
 				ClientCommand command{ cmd, client, player };
 				queue.put(command);
