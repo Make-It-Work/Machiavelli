@@ -331,7 +331,10 @@ void GameHandler::printBuildings(std::shared_ptr<Player> player, bool built) {
 
 void GameHandler::printTurn(std::shared_ptr<Player> player)
 {
-	turn->print(player);
+	if (!gameEnded)
+		turn->print(player);
+	else
+		endGame();
 }
 
 void GameHandler::handleCommand(ClientCommand command)
@@ -396,6 +399,7 @@ void GameHandler::determineScore()
 		for each (const auto& building in buildings) {
 			if (building.second->getOwner() == player && building.second->isPlayed()) {
 				player->addPoints(building.second->getPoints());
+				player->addBuildingPoints(building.second->getPoints());
 				nBuildings++;
 				if (std::find(colours.begin(), colours.end(), building.second->getColor()) == colours.end()) {
 					colours.push_back(building.second->getColor());
@@ -415,8 +419,11 @@ void GameHandler::determineScore()
 
 void GameHandler::endGame()
 {
+	gameEnded = true;
 	bool foundHighestScore = false;
+	bool foundHighestBuildingScore = false;
 	std::shared_ptr<Player> bestScoring = nullptr;
+	std::shared_ptr<Player> bestBuildingScoring = nullptr;
 	for (std::shared_ptr<Player> player : players)
 	{
 		if (bestScoring == nullptr)
@@ -428,15 +435,27 @@ void GameHandler::endGame()
 		}
 		else if (player->getPoints() == bestScoring->getPoints())
 			foundHighestScore = false;
+
+		if (bestBuildingScoring == nullptr)
+			bestBuildingScoring = player;
+		else if (player->getBuildingPoints() > bestBuildingScoring->getBuildingPoints())
+		{
+			bestBuildingScoring = player;
+			foundHighestBuildingScore = true;
+		}
+		else if (player->getBuildingPoints() == bestBuildingScoring->getBuildingPoints())
+			foundHighestBuildingScore = false;
 	}
 
-	if (foundHighestScore)
+	if (foundHighestScore || foundHighestBuildingScore)
 	{
 		for (std::shared_ptr<Player> player : players)
 		{
 			player->get_socket()->write("=========GAME ENDED=========\r\n");
 			if (foundHighestScore)
 				player->get_socket()->write("The winner of the game is.. " + bestScoring->get_name() + " with a score of " + std::to_string(bestScoring->getPoints()) + " points!");
+			else if (foundHighestBuildingScore)
+				player->get_socket()->write("The winner of the game is.. " + bestBuildingScoring->get_name() + " with " + std::to_string(bestScoring->getBuildingPoints()) + " points from buildings!");
 		}
 	}
 
