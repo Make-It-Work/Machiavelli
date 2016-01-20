@@ -163,11 +163,15 @@ void GameHandler::pickCharacterCard(int cardId, std::shared_ptr<Player> player) 
 std::string GameHandler::buildBuilding(std::shared_ptr<Player> player, int buildingId)
 {
 	if (buildings[buildingId]->getOwner() == player && !buildings[buildingId]->isPlayed()) {
-		if (player->getGold() >= buildings[buildingId]->getCost()) {
-			player->takeGold(buildings[buildingId]->getCost());
-			goldLeft += buildings[buildingId]->getCost();
-			buildings[buildingId]->setPlayed(true);
-			return "oke";
+		if (characters[turnID]->getNumOfBuildings() > 0) {
+			if (player->getGold() >= buildings[buildingId]->getCost()) {
+				player->takeGold(buildings[buildingId]->getCost());
+				goldLeft += buildings[buildingId]->getCost();
+				buildings[buildingId]->setPlayed(true);
+				characters[turnID]->setNumOfBuildings(characters[turnID]->getNumOfBuildings() - 1);
+				return "oke";
+			}
+			return "may not build";
 		}
 		else {
 			return "No gold";
@@ -318,6 +322,10 @@ void GameHandler::resetCharOwners()
 		kv.second->setOwner(nullptr);
 		kv.second->setKilled(false);
 		kv.second->setStolen(false);
+		kv.second->setNumOfBuildings(1);
+		if (kv.first == 7) {
+			kv.second->setNumOfBuildings(3);
+		}
 	}
 }
 
