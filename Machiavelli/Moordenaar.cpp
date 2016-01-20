@@ -20,7 +20,7 @@ bool Moordenaar::execute(ClientCommand command, std::shared_ptr<GameHandler> gam
 	}
 	else {
 		int killed = stoi(command.get_cmd());
-		if (killed > 0 && killed < 8) {
+		if (killed > 0 && killed < 9) {
 			game->killCharacter(killed);
 		}
 		else {
