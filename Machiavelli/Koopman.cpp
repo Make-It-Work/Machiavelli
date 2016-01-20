@@ -33,7 +33,7 @@ void Koopman::getExtraGoldPieces(std::shared_ptr<Player> player, std::shared_ptr
 	game->addGold(player, amount);
 }
 
-std::string Koopman::getActionDescription() const {
+std::string Koopman::getActionDescription(std::shared_ptr<GameHandler> game) const {
 	return "Een extra goudstuk pakken\r\n [0] Hurray! \r\n";
 }
 

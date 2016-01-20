@@ -2,6 +2,7 @@
 #include "Character.h"
 #include "Player.hpp"
 #include "GameHandler.h"
+#include <vector>
 
 class Dief :
 	public Character
@@ -9,8 +10,10 @@ class Dief :
 public:
 	Dief();
 	~Dief();
-	bool execute(ClientCommand command, std::shared_ptr<GameHandler> game) const { return true; };
+	bool execute(ClientCommand command, std::shared_ptr<GameHandler> game) const;
 	void getExtraGoldPieces(std::shared_ptr<Player> player, std::shared_ptr<GameHandler> game) const {};
-	std::string getActionDescription() const { return "Dit is een actie"; }
+	std::string getActionDescription(std::shared_ptr<GameHandler> game) const;
+private:
+	std::vector<int> charactersToSteal;
 }; 
 

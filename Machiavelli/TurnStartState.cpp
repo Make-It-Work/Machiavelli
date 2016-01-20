@@ -18,6 +18,13 @@ TurnStartState::~TurnStartState()
 
 void TurnStartState::print(std::shared_ptr<Player> player)
 {
+	//Handel af of er van het karakter gestolen is
+	if (game->characters[game->getTurnID()]->isStolen() != nullptr) {
+		player->get_socket()->write("Je bent bestolen. Je goudstukken zijn nu van de dief\r\n");
+		int goldpieces = player->getGold();
+		player->takeGold(goldpieces);
+		game->characters[game->getTurnID()]->isStolen()->addGold(goldpieces);
+	}
 	//Character& chr = game.getCharacter(game.getTurnID());
 	player->get_socket()->write("Je bent nu de: " + game->characters[game->getTurnID()]->getName() + "\r\n");
 	player->get_socket()->write("Goud: " + std::to_string(player->getGold()) + "\r\n");

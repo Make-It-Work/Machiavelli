@@ -70,7 +70,7 @@ void GameHandler::initCharacterCards() {
 	// getline() leest een regel die eindigt in een \n
 	// (je kunt ook een 3e param meegeven als je een ander 'regeleinde' wil gebruiken)
 	while (std::getline(input_file, line)) { // getline() geeft false zodra end-of-file is bereikt
-		
+
 		std::istringstream buf(line);
 		std::istream_iterator <std::string> beg(buf), end;
 		std::vector<std::string> line(beg, end);
@@ -153,7 +153,7 @@ int GameHandler::amountOfCharactersLeft() {
 		}
 	}
 	return counter;
-	
+
 }
 
 void GameHandler::pickCharacterCard(int cardId, std::shared_ptr<Player> player) {
@@ -177,7 +177,7 @@ std::string GameHandler::buildBuilding(std::shared_ptr<Player> player, int build
 }
 
 std::shared_ptr<Player> GameHandler::getNextPlayer(std::shared_ptr<Player> currentPlayer) {
-	
+
 	auto i = std::find(players.begin(), players.end(), currentPlayer);
 	int nPosition;
 	if (i + 1 != players.end())
@@ -250,24 +250,23 @@ void GameHandler::showHelp(std::shared_ptr<Socket> client) {
 }
 
 bool GameHandler::startTurns() {
-	if(!lastRound)
+	if (!lastRound)
 		checkLastRound();
 	for each (const auto& kv in characters)
 	{
-		
-			if (kv.second->getOwner() != stock  && kv.first > turnID) {
-				turnID = kv.first;
-				turn = std::make_shared<TurnStartState>(shared_from_this());
-				curPlayer = kv.second->getOwner();
-				if (kv.second->isKilled()) {
-					curPlayer->get_socket()->write("Je bent vermoord en kunt dus deze beurt niets doen");
-				}
-				else {
-					return true;
-				}
+		if (kv.second->getOwner() != stock  && kv.first > turnID) {
+			turnID = kv.first;
+			turn = std::make_shared<TurnStartState>(shared_from_this());
+			curPlayer = kv.second->getOwner();
+			if (kv.second->isKilled()) {
+				curPlayer->get_socket()->write("Je bent vermoord en kunt dus deze beurt niets doen");
 			}
+			else {
+				return true;
+			}
+		}
 	}
-	if(!lastRound)
+	if (!lastRound)
 		newRound();
 	else
 	{
@@ -318,6 +317,7 @@ void GameHandler::resetCharOwners()
 	{
 		kv.second->setOwner(nullptr);
 		kv.second->setKilled(false);
+		kv.second->setStolen(false);
 	}
 }
 
@@ -469,18 +469,23 @@ const Character& GameHandler::getCharacterRef(int id) {
 	return *characters[id];
 }
 
-std::string GameHandler::getBuildingString(int id) 
-{ 
-	return buildings[id]->getName() + "(" + std::to_string(buildings[id]->getPoints()) + "," + buildings[id]->getColor() + ")"; 
+std::string GameHandler::getBuildingString(int id)
+{
+	return buildings[id]->getName() + "(" + std::to_string(buildings[id]->getPoints()) + "," + buildings[id]->getColor() + ")";
 };
 
-std::shared_ptr<Player> GameHandler::owner(int cardId) 
+std::shared_ptr<Player> GameHandler::owner(int cardId)
 {
-	return characters[cardId]->getOwner(); 
+	return characters[cardId]->getOwner();
 
 }
 
 void GameHandler::killCharacter(int id)
 {
 	characters[id]->setKilled(true);
+}
+
+void GameHandler::stealCharacter(int id, std::shared_ptr<Player> player)
+{
+	characters[id]->setStolen(player);
 }

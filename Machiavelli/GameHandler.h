@@ -95,4 +95,5 @@ public:
 
 	//Character Actions
 	void killCharacter(int id);
+	void stealCharacter(int id, std::shared_ptr<Player> player);
 };

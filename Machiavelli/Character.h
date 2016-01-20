@@ -13,6 +13,7 @@ protected:
 	std::string name;
 	std::shared_ptr<Player> owner;
 	bool killed = false;
+	std::shared_ptr<Player> stolen = nullptr;
 public:
 	Character();
 	~Character();
@@ -24,10 +25,12 @@ public:
 	std::string getName() const { return name; }
 	bool isKilled() const { return killed; }
 	void setKilled(bool kill) { killed = kill; }
+	std::shared_ptr<Player> isStolen() const { return stolen; }
+	void setStolen(std::shared_ptr<Player> thief) { stolen = thief; }
 
 	virtual bool execute(ClientCommand command, std::shared_ptr<GameHandler> game) const = 0;
 	virtual void getExtraGoldPieces(std::shared_ptr<Player> player, std::shared_ptr<GameHandler> game) const = 0;
-	virtual std::string getActionDescription() const = 0;
+	virtual std::string getActionDescription(std::shared_ptr<GameHandler> game) const = 0;
 };
 
 
