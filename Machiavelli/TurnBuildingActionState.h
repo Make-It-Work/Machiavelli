@@ -13,5 +13,6 @@ public:
 	std::shared_ptr<TurnState> nextState();
 private:
 	std::vector<int> buildingCards;
+	int numOfBuildings = 0;
 };
 
