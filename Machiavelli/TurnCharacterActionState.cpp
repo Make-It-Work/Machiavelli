@@ -23,8 +23,9 @@ void TurnCharacterActionState::handleCommand(ClientCommand command, std::shared_
 {
 	gameHandler->getCurPlayer()->get_socket()->write("Executed action \r\n");
 	const Character& chr = game->getCharacterRef(game->getTurnID());
-	chr.execute(gameHandler);
-	game->nextTurn();
+	if (chr.execute(command, gameHandler)) {
+		game->nextTurn();
+	}
 }
 
 std::shared_ptr<TurnState> TurnCharacterActionState::nextState() {

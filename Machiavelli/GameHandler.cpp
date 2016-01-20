@@ -254,12 +254,18 @@ bool GameHandler::startTurns() {
 		checkLastRound();
 	for each (const auto& kv in characters)
 	{
-		if (kv.second->getOwner() != stock  && kv.first > turnID) {
-			turnID = kv.first;
-			turn = std::make_shared<TurnStartState>(shared_from_this());
-			curPlayer = kv.second->getOwner();
-			return true;
-		}
+		
+			if (kv.second->getOwner() != stock  && kv.first > turnID) {
+				turnID = kv.first;
+				turn = std::make_shared<TurnStartState>(shared_from_this());
+				curPlayer = kv.second->getOwner();
+				if (kv.second->isKilled()) {
+					curPlayer->get_socket()->write("Je bent vermoord en kunt dus deze beurt niets doen");
+				}
+				else {
+					return true;
+				}
+			}
 	}
 	if(!lastRound)
 		newRound();
@@ -311,6 +317,7 @@ void GameHandler::resetCharOwners()
 	for each (const auto& kv in characters)
 	{
 		kv.second->setOwner(nullptr);
+		kv.second->setKilled(false);
 	}
 }
 
@@ -452,4 +459,9 @@ std::shared_ptr<Player> GameHandler::owner(int cardId)
 {
 	return characters[cardId]->getOwner(); 
 
+}
+
+void GameHandler::killCharacter(int id)
+{
+	characters[id]->setKilled(true);
 }

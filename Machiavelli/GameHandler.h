@@ -91,4 +91,7 @@ public:
 	std::shared_ptr<Player> getStock() { return stock; };
 	const Character& getCharacterRef(int id);
 	std::shared_ptr<Player> owner(int cardId);
+
+	//Character Actions
+	void killCharacter(int id);
 };
