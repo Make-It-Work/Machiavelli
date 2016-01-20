@@ -250,6 +250,8 @@ void GameHandler::showHelp(std::shared_ptr<Socket> client) {
 }
 
 bool GameHandler::startTurns() {
+	if(!lastRound)
+		checkLastRound();
 	for each (const auto& kv in characters)
 	{
 		if (kv.second->getOwner() != stock  && kv.first > turnID) {
@@ -259,7 +261,13 @@ bool GameHandler::startTurns() {
 			return true;
 		}
 	}
-	newRound();
+	if(!lastRound)
+		newRound();
+	else
+	{
+		determineScore();
+		endGame();
+	}
 }
 
 bool GameHandler::nextTurn()
@@ -347,6 +355,86 @@ void GameHandler::assignBuilding(int id, std::shared_ptr<Player> player)
 	buildings[id]->setOwner(player);
 }
 
+
+void GameHandler::checkLastRound()
+{
+	for (std::shared_ptr<Player> player : players)
+	{
+		if (amountOfBuildings(player) >= 8)
+		{
+			lastRound = true;
+			firstFinish = player;
+			player->addPoints(4);
+		}
+	}
+}
+
+int GameHandler::amountOfBuildings(std::shared_ptr<Player> player)
+{
+	int ret = 0;
+	for each (const auto& building in buildings) {
+		if (building.second->getOwner() == player && building.second->isPlayed()) {
+			ret++;
+		}
+	}
+	return ret;
+}
+
+void GameHandler::determineScore()
+{
+	for (std::shared_ptr<Player> player : players)
+	{
+		std::vector<std::string> colours;
+		int nBuildings = 0;
+		for each (const auto& building in buildings) {
+			if (building.second->getOwner() == player && building.second->isPlayed()) {
+				player->addPoints(building.second->getPoints());
+				nBuildings++;
+				if (std::find(colours.begin(), colours.end(), building.second->getColor()) == colours.end()) {
+					colours.push_back(building.second->getColor());
+				}
+			}
+		}
+		if (colours.size() == 5)
+		{
+			player->addPoints(3);
+		}
+		if (nBuildings >= 8 && player != firstFinish)
+		{
+			player->addPoints(2);
+		}
+	}
+}
+
+void GameHandler::endGame()
+{
+	bool foundHighestScore = false;
+	std::shared_ptr<Player> bestScoring = nullptr;
+	for (std::shared_ptr<Player> player : players)
+	{
+		if (bestScoring == nullptr)
+			bestScoring = player;
+		else if (player->getPoints() > bestScoring->getPoints())
+		{
+			bestScoring = player;
+			foundHighestScore = true;
+		}
+		else if (player->getPoints() == bestScoring->getPoints())
+			foundHighestScore = false;
+	}
+
+	if (foundHighestScore)
+	{
+		for (std::shared_ptr<Player> player : players)
+		{
+			player->get_socket()->write("=========GAME ENDED=========\r\n");
+			if (foundHighestScore)
+				player->get_socket()->write("The winner of the game is.. " + bestScoring->get_name() + " with a score of " + std::to_string(bestScoring->getPoints()) + " points!");
+		}
+	}
+
+}
+
 const Building& GameHandler::getBuilding(int id) {
 	return *buildings[id];
 }
@@ -363,4 +451,5 @@ std::string GameHandler::getBuildingString(int id)
 std::shared_ptr<Player> GameHandler::owner(int cardId) 
 {
 	return characters[cardId]->getOwner(); 
+
 }

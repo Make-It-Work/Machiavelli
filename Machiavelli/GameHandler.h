@@ -24,10 +24,19 @@ private:
 
 	int goldLeft = 32;
 	
+	//game start
 	void initCharacterCards();
 	void initBuildingCards();
 	void resetCharOwners();
-	
+
+	//game end
+	bool lastRound = false;
+	void checkLastRound();
+	int amountOfBuildings(std::shared_ptr<Player> player);
+	void determineScore();
+	std::shared_ptr<Player> firstFinish = nullptr;
+	void endGame();
+
 	//turn data
 	int turnID = -1;
 public:
