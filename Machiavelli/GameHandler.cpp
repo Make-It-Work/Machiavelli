@@ -480,6 +480,10 @@ std::shared_ptr<Player> GameHandler::owner(int cardId)
 
 }
 
+int GameHandler::buildingFromStock() {
+	return(RandomEngine::drawBuildingCard(buildings));
+}
+
 void GameHandler::killCharacter(int id)
 {
 	characters[id]->setKilled(true);
@@ -488,4 +492,9 @@ void GameHandler::killCharacter(int id)
 void GameHandler::stealCharacter(int id, std::shared_ptr<Player> player)
 {
 	characters[id]->setStolen(player);
+}
+
+void GameHandler::changeBuildingOwner(int id, std::shared_ptr<Player> newOwner)
+{
+	buildings[id]->setOwner(newOwner);
 }
