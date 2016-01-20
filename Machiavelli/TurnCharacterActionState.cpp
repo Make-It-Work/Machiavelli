@@ -6,8 +6,6 @@
 TurnCharacterActionState::TurnCharacterActionState(std::shared_ptr<GameHandler> gh)
 {
 	game = gh;
-	
-
 }
 
 TurnCharacterActionState::~TurnCharacterActionState()
@@ -24,6 +22,8 @@ void TurnCharacterActionState::print(std::shared_ptr<Player> player)
 void TurnCharacterActionState::handleCommand(ClientCommand command, std::shared_ptr<GameHandler> gameHandler)
 {
 	gameHandler->getCurPlayer()->get_socket()->write("Executed action \r\n");
+	const Character& chr = game->getCharacterRef(game->getTurnID());
+	chr.execute(gameHandler);
 	game->nextTurn();
 }
 
