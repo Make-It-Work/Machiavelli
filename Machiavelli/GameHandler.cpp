@@ -514,7 +514,7 @@ bool GameHandler::removeBuilding(int id, std::shared_ptr<Player> demolisher)
 
 void GameHandler::changeBuildingOwner(int id, std::shared_ptr<Player> newOwner)
 {
-	if (!buildings[id]->isPlayed) {
+	if (!buildings[id]->isPlayed()) {
 		buildings[id]->setOwner(newOwner);
 	}
 }
